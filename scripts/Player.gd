@@ -26,8 +26,11 @@ func read_input():
 func _physics_process(delta):
 	read_input()
 
-	if velocity.x != 0:
-		$AnimatedSprite.flip_h = velocity.x < 0
+	if velocity.length() != 0:
+		if velocity.x > 0:
+			$AnimatedSprite.flip_h = false
+		elif velocity.x < 0:
+			$AnimatedSprite.flip_h = true
 		$AnimatedSprite.animation = "running"
 	else:
 		$AnimatedSprite.animation = "idle"
