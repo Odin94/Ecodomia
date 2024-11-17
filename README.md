@@ -6,3 +6,14 @@ Credits:
 * Rogue character by [Calciumtrice](https://opengameart.org/content/animated-rogue)
 * Sproutlands asset pack (eg. the bunnies) by [cupnooble](https://cupnooble.itch.io/sprout-lands-asset-pack)
 * Fence, grass & flowers made by me
+
+
+<!-- TODOs: 
+* Put cargo-management into one script and make cargo script only hold STATUS
+* Unify all move-y prefabs (cargo, money) in some reasonable way
+
+
+
+
+
+-->

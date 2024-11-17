@@ -78,7 +78,7 @@ func _physics_process(delta):
 		STATUS.FLYING_TO_BUNNY:
 			process_flying_to_bunny(delta)
 		_:
-			print("Unknown status.")
+			print("Cargo unknown status: ", status)
  
 
 func give_to_bunny(bunny: Node2D):

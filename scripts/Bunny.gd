@@ -1,8 +1,11 @@
 extends KinematicBody2D
 
+var money_scene = load("res://scenes/Money.tscn")
+
 export(NodePath) var target_area_path
 onready var target_area := get_node(target_area_path) as Node2D
 
+onready var money_drop_off_area: Node2D = get_closest_money_drop_off_area()
 onready var bunnies = get_tree().get_nodes_in_group("Bunny")  # TODO: Eventually only get bunnies in your own queue
 var queue_position: int
 
@@ -40,6 +43,11 @@ func _physics_process(delta):
 
 func get_satisfied():
 	status = STATUS.SATISFIED
+	var money = money_scene.instance()
+	money_drop_off_area.add_money(money)
+	money.global_position = global_position
+	get_tree().get_root().add_child(money)
+
 
 func is_closer(bunny):
 	var target_position = target_area.global_position
@@ -61,3 +69,16 @@ func move_to_target(target: Vector2, delta):
 	velocity = global_position.direction_to(target)
 	move_and_slide(velocity * speed)
 
+
+func get_closest_money_drop_off_area() -> Node2D:
+	var closest_node = null
+	var closest_distance = INF
+	var nodes = get_tree().get_nodes_in_group("MoneyDropOffArea")
+	
+	for node in nodes:
+		var distance = global_position.distance_to(node.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_node = node
+	
+	return closest_node
