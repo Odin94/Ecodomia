@@ -1,23 +1,27 @@
 extends Node2D
 
 
-enum STATUS {UNHARVESTED, PICKING_UP, PICKED_UP, PUTTING_DOWN, PUT_DOWN}
+enum STATUS {UNHARVESTED, PICKING_UP, PICKED_UP, PUTTING_DOWN, PUT_DOWN, FLYING_TO_BUNNY}
 
 var pick_up_distance := 50
 var speed := 200
 
 var status = STATUS.UNHARVESTED
 onready var player = get_tree().get_nodes_in_group("Player")[0]
+onready var cargo_stashes = get_tree().get_nodes_in_group("CargoStash")
 
 var _current_velocity := Vector2.ZERO
 var drag_factor = 0.25
+var cargo_stash: Node2D
+var cargo_stash_putdown_location := Vector2.ZERO
 
+var bunny: Node2D
 
 func move_to_target(target: Vector2, delta):
 	var local_speed := speed
 	if global_position.distance_to(target) < 25:
 		local_speed = 50
-	if global_position.distance_to(target) < 5:
+	if global_position.distance_to(target) < 2:
 		return
 	var direction := global_position.direction_to(target)
 	var desired_velocity := direction * local_speed
@@ -44,10 +48,20 @@ func process_picking_up(delta):
 	# TODO: Put area2d on player at pickup_location and transition state when entering it? Or just work off of distance?
 
 func process_picked_up(delta):
-	# player script handles movement now	
-	pass
-	# put drop-off zones in groups and look for distance to them here
+	# player script handles movement now
+	for stash in cargo_stashes:
+		if global_position.distance_to(stash.global_position) < pick_up_distance:
+			status = STATUS.PUTTING_DOWN
+			cargo_stash = get_closest_cargo_stash() # TODO: Manage all of this in player or a global script that manages putting stuff down?
+			cargo_stash.add_cargo(self)
 
+func process_put_down(delta):
+	move_to_target(cargo_stash_putdown_location, delta)
+
+func process_flying_to_bunny(delta):
+	move_to_target(bunny.global_position, delta)
+	if global_position.distance_to(bunny.global_position) < 2:
+		pass
 
 func _physics_process(delta):
 	match status:
@@ -58,9 +72,29 @@ func _physics_process(delta):
 		STATUS.PICKED_UP:
 			process_picked_up(delta)
 		STATUS.PUTTING_DOWN:
-			print("The object is being put down.")
+			process_put_down(delta)
 		STATUS.PUT_DOWN:
 			print("The object has been put down.")
+		STATUS.FLYING_TO_BUNNY:
+			process_flying_to_bunny(delta)
 		_:
 			print("Unknown status.")
  
+
+func give_to_bunny(bunny: Node2D):
+	status = STATUS.FLYING_TO_BUNNY
+	self.bunny = bunny
+
+
+func get_closest_cargo_stash() -> Node2D:
+	var closest_node = null
+	var closest_distance = INF
+	var nodes = cargo_stashes
+	
+	for node in nodes:
+		var distance = global_position.distance_to(node.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_node = node
+	
+	return closest_node
