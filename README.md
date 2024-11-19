@@ -9,7 +9,6 @@ Credits:
 
 
 <!-- TODOs: 
-* Put cargo-management into one script and make cargo script only hold STATUS
 * Unify all move-y prefabs (cargo, money) in some reasonable way
 
 

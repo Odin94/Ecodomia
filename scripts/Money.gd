@@ -15,11 +15,8 @@ var drag_factor = 0.25
 var status = STATUS.DROPPING_OFF
 var is_in_pickup_delay := false
 
-var target := global_position
-
-# When added to a MoneyDropOffArea's stash, the area sets this money's target (TODO: manage all money movement in one single script?)
-
 func process_dropping_off(delta):
+	var target = drop_off_area.get_put_down_location(self)
 	move_to_target(target, delta)
 	if global_position.distance_to(target) < 2:
 		status = STATUS.LYING_AROUND

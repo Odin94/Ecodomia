@@ -6,7 +6,7 @@ export(NodePath) var target_area_path
 onready var target_area := get_node(target_area_path) as Node2D
 
 onready var money_drop_off_area: Node2D = get_closest_money_drop_off_area()
-onready var bunnies = get_tree().get_nodes_in_group("Bunny")  # TODO: Eventually only get bunnies in your own queue
+onready var bunnies = get_tree().get_nodes_in_group("Bunny") # TODO: Eventually only get bunnies in your own queue
 var queue_position: int
 
 var velocity := Vector2.ZERO

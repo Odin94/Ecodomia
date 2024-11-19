@@ -38,23 +38,14 @@ func walk():
 	velocity = move_and_slide(velocity * speed)
 	
 
-func update_cargo():
-	var updated_cargo = []
-	for cargo in collected_cargo:
-		if cargo.status == cargo.STATUS.PICKED_UP:
-			updated_cargo.append(cargo)
-	return updated_cargo
-
-func move_cargo(delta):
-	for i in collected_cargo.size():
-		var cargo = collected_cargo[i]
-		cargo.move_to_target(get_pickup_location(cargo), delta)
-
-func _physics_process(delta):
+func _physics_process(_delta):
 	walk()
-	collected_cargo = update_cargo()
-	move_cargo(delta)
 
+func add_cargo(cargo):
+	collected_cargo.append(cargo)
+
+func remove_cargo(cargo):
+	collected_cargo.erase(cargo)
 
 func add_money(money):
 	collected_money.append(money)
