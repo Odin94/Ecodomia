@@ -25,13 +25,13 @@ func process_dropping_off(delta):
 		status = STATUS.LYING_AROUND
 	
 	
-func process_lying_around(delta):
+func process_lying_around(_delta):
 	if global_position.distance_to(player.global_position) < pick_up_distance:
 		get_picked_up()
 
 
 func process_following_player(delta):
-	var target = player.get_pickup_location()
+	var target = player.get_pickup_location(self)
 	move_to_target(target, delta)
 	
 
@@ -51,12 +51,12 @@ func get_picked_up():
 	if is_in_pickup_delay:
 		return
 
-	print("picked up!")
 	is_in_pickup_delay = true
 	drop_off_area.stash.erase(self)
+	player.add_money(self)
 
 	var delay = rng.randf_range(0.05, 0.2)
-	yield(get_tree().create_timer(delay), "timeout")
+	yield (get_tree().create_timer(delay), "timeout")
 	status = STATUS.FOLLOWING_PLAYER
 
 
@@ -68,7 +68,7 @@ func move_to_target(target: Vector2, delta):
 		return
 	var direction := global_position.direction_to(target)
 	var desired_velocity := direction * local_speed
-	var change = (desired_velocity - _current_velocity) * drag_factor  # change that slowly converges our velocity onto desired_velocity
+	var change = (desired_velocity - _current_velocity) * drag_factor # change that slowly converges our velocity onto desired_velocity
 	
 	_current_velocity += change
 	position += _current_velocity * delta

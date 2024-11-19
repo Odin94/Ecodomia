@@ -37,7 +37,7 @@ func process_unharvested():
 		_current_velocity = speed * (global_position - player.global_position).normalized() * 8  # vector away from player
 		
 func process_picking_up(delta):
-	var target = player.get_pickup_location()
+	var target = player.get_pickup_location(self)
 	
 	move_to_target(target, delta)
 	
