@@ -7,9 +7,6 @@ onready var target_area := get_node(target_area_path) as Node2D
 
 var spawned_bunnies = []
 
-func _ready():
-	print("Spawner", target_area)
-
 func _physics_process(delta):
 	spawned_bunnies = get_un_freed_bunnies()
 

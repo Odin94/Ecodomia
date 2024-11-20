@@ -18,9 +18,6 @@ enum STATUS {IN_QUEUE, SATISFIED}
 
 var status = STATUS.IN_QUEUE
 
-func _ready():
-	print(target_area_path)
-
 func process_in_queue(delta):
 	var closer_bunnies = get_closer_bunnies()
 	queue_position = closer_bunnies.size()
