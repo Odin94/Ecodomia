@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/tiles/pyxel_map.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/areas/MoneyDropOffArea.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/BunnySpawner.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/areas/VendorArea.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/areas/UpgradeArea.tscn" type="PackedScene" id=11]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -567,6 +568,10 @@ position = Vector2( -44, 89 )
 
 [node name="VendorArea" parent="." instance=ExtResource( 10 )]
 position = Vector2( -80, 89 )
+
+[node name="UpgradeArea" parent="." instance=ExtResource( 11 )]
+position = Vector2( -41, 81 )
+vendor_area_to_upgrade_path = NodePath("../VendorArea")
 
 [node name="Bunny" parent="." instance=ExtResource( 5 )]
 position = Vector2( 58, 138 )

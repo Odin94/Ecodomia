@@ -53,6 +53,11 @@ func add_money(money):
 func remove_money(money):
 	collected_money.erase(money)
 
+func take_money():
+	if collected_money.empty():
+		return null
+	return collected_money.pop_front()
+
 func get_pickup_location(cargo_or_money):
 	var inventory_size = collected_cargo.size() + collected_money.size()
 	var index = inventory_size

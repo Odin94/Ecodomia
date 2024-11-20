@@ -4,8 +4,9 @@ var rng = RandomNumberGenerator.new()
 
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 var drop_off_area: Node2D
+var spend_area: Node2D
 
-enum STATUS {DROPPING_OFF, LYING_AROUND, FOLLOWING_PLAYER}
+enum STATUS {DROPPING_OFF, LYING_AROUND, FOLLOWING_PLAYER, SPENDING}
 
 var pick_up_distance := 50
 var speed := 200
@@ -31,6 +32,12 @@ func process_following_player(delta):
 	var target = player.get_pickup_location(self)
 	move_to_target(target, delta)
 	
+func process_spending(delta):
+	var target = spend_area.global_position
+	move_to_target(target, delta)
+	if global_position.distance_to(target) < 2:
+		spend_area.receive_money()
+		queue_free()
 
 func _physics_process(delta):
 	match status:
@@ -40,6 +47,8 @@ func _physics_process(delta):
 			process_lying_around(delta)
 		STATUS.FOLLOWING_PLAYER:
 			process_following_player(delta)
+		STATUS.SPENDING:
+			process_spending(delta)
 		_:
 			print("Money unknown status: ", status)
 		
@@ -56,6 +65,12 @@ func get_picked_up():
 	yield (get_tree().create_timer(delay), "timeout")
 	status = STATUS.FOLLOWING_PLAYER
 
+
+func get_spent(upgrade_area: Node2D):
+	# called by eg. UpgradeArea
+	status = STATUS.SPENDING
+	spend_area = upgrade_area
+	
 
 func move_to_target(target: Vector2, delta):
 	var local_speed := speed
