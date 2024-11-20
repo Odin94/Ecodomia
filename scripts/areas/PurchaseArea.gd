@@ -19,3 +19,4 @@ func _process(delta):
 				cargo.give_to_bunny(bunny)
 				yield(get_tree().create_timer(.5), "timeout")
 				bunny.get_satisfied()
+				bunnies = get_tree().get_nodes_in_group("Bunny") # find newly spawned bunnies

@@ -61,9 +61,10 @@ func process_put_down(delta):
 	move_to_target(cargo_stash_putdown_location, delta)
 
 func process_flying_to_bunny(delta):
+	if not is_instance_valid(bunny):
+		queue_free()
+		return
 	move_to_target(bunny.global_position, delta)
-	if global_position.distance_to(bunny.global_position) < 2:
-		pass
 
 func _physics_process(delta):
 	match status:

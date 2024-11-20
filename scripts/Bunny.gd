@@ -6,7 +6,8 @@ export(NodePath) var target_area_path
 onready var target_area := get_node(target_area_path) as Node2D
 
 onready var money_drop_off_area: Node2D = get_closest_money_drop_off_area()
-onready var bunnies = get_tree().get_nodes_in_group("Bunny") # TODO: Eventually only get bunnies in your own queue
+# TODO: Eventually only get bunnies in your own queue, maybe give the bunny access to its spawner and just take the spawner list here
+onready var bunnies = get_tree().get_nodes_in_group("Bunny")
 var queue_position: int
 
 var velocity := Vector2.ZERO
@@ -16,6 +17,9 @@ var queue_standing_distance = 20
 enum STATUS {IN_QUEUE, SATISFIED}
 
 var status = STATUS.IN_QUEUE
+
+func _ready():
+	print(target_area_path)
 
 func process_in_queue(delta):
 	var closer_bunnies = get_closer_bunnies()
@@ -30,6 +34,9 @@ func process_in_queue(delta):
 func process_satisfied(delta):
 	var position_to_approach = target_area.global_position - Vector2(400, 0)
 	move_to_target(position_to_approach, delta)
+	if global_position.distance_to(position_to_approach) < 5:
+		queue_free()
+	
 
 func _physics_process(delta):
 	match status:
@@ -56,7 +63,7 @@ func is_closer(bunny):
 func get_closer_bunnies():
 	var closer_bunnies = []
 	for bunny in bunnies:
-		if bunny.status == STATUS.IN_QUEUE and is_closer(bunny):
+		if is_instance_valid(bunny) and bunny.status == STATUS.IN_QUEUE and is_closer(bunny):
 			closer_bunnies.append(bunny)
 	return closer_bunnies
 
