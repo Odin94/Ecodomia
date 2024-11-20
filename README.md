@@ -10,7 +10,7 @@ Credits:
 
 <!-- TODOs: 
 * Unify all move-y prefabs (cargo, money) in some reasonable way
-
+* Maybe move the whole sales process into a single script that takes the areas as input?
 
 
 

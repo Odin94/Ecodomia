@@ -17,3 +17,4 @@ func is_staffed():
 
 func get_upgraded():
 	staff_upgrade_purchased = true
+	$AnimatedSprite.visible = true
