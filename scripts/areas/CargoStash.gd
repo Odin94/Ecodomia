@@ -16,6 +16,7 @@ func _physics_process(delta):
 func add_cargo(cargo: Node2D):
 	stash.append(cargo)
 
+
 func spend_cargo():
 	if stash.size() > 0:
 		return stash.pop_back()

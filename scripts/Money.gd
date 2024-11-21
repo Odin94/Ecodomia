@@ -16,6 +16,9 @@ var drag_factor = 0.25
 var status = STATUS.DROPPING_OFF
 var is_in_pickup_delay := false
 
+func _ready():
+	rng.randomize()
+
 func process_dropping_off(delta):
 	var target = drop_off_area.get_put_down_location(self)
 	move_to_target(target, delta)

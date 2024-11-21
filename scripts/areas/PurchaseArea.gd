@@ -3,13 +3,15 @@ extends Node2D
 export(NodePath) var cargo_stash_path
 onready var cargo_stash := get_node(cargo_stash_path) as Node2D
 
-onready var bunnies = get_tree().get_nodes_in_group("Bunny")  # TODO: Eventually only get bunnies in your own queue
+export(NodePath) var bunny_spawner_path
+onready var bunny_spawner := get_node(bunny_spawner_path) as Node2D
+
 onready var vendor_area: Node2D = get_closest_vendor_area()
 
 var bunnies_awaiting_satisfaction = []
 
 func _process(delta):
-	for bunny in bunnies:
+	for bunny in bunny_spawner.spawned_bunnies:
 		if bunny in bunnies_awaiting_satisfaction:
 			continue
 		if bunny.global_position.distance_to(global_position) < 2 and vendor_area.is_staffed():
@@ -20,8 +22,6 @@ func _process(delta):
 				cargo.give_to_bunny(bunny)
 				yield(get_tree().create_timer(.5), "timeout")
 				bunny.get_satisfied()
-				bunnies = get_tree().get_nodes_in_group("Bunny") # find newly spawned bunnies
-
 
 
 func get_closest_vendor_area() -> Node2D:

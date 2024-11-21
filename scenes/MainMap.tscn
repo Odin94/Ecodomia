@@ -4,11 +4,11 @@
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/tiles/pyxel_B_tiles.png" type="Texture" id=3]
 [ext_resource path="res://scenes/Cargo.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Bunny.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/spawners/CarrotSpawner.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/areas/PurchaseArea.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/areas/CargoStash.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/areas/MoneyDropOffArea.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/BunnySpawner.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/spawners/BunnySpawner.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/areas/VendorArea.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/areas/UpgradeArea.tscn" type="PackedScene" id=11]
 
@@ -556,9 +556,14 @@ cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 196604, 5, 0, 196605, 0, 0, 262140, 6, 0, 262141, 4, 0 )
 
+[node name="BunnySpawner" parent="." instance=ExtResource( 9 )]
+position = Vector2( 217, 142 )
+target_area_path = NodePath("../PurchaseArea")
+
 [node name="PurchaseArea" parent="." instance=ExtResource( 6 )]
 position = Vector2( -81, 138 )
 cargo_stash_path = NodePath("../CargoStash")
+bunny_spawner_path = NodePath("../BunnySpawner")
 
 [node name="CargoStash" parent="." instance=ExtResource( 7 )]
 position = Vector2( -112, 80 )
@@ -573,24 +578,7 @@ position = Vector2( -80, 89 )
 position = Vector2( -148, 77 )
 vendor_area_to_upgrade_path = NodePath("../VendorArea")
 
-[node name="Bunny" parent="." instance=ExtResource( 5 )]
-position = Vector2( 58, 138 )
-target_area_path = NodePath("../PurchaseArea")
-
-[node name="Bunny2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 91, 138 )
-target_area_path = NodePath("../PurchaseArea")
-
-[node name="Bunny3" parent="." instance=ExtResource( 5 )]
-position = Vector2( 122, 137 )
-target_area_path = NodePath("../PurchaseArea")
-
-[node name="BunnySpawner" parent="." instance=ExtResource( 9 )]
-position = Vector2( 217, 142 )
-target_area_path = NodePath("../PurchaseArea")
-
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( -52, 2 )
+[node name="SalesBench" type="Node2D" parent="."]
 
 [node name="Carrots" type="Node2D" parent="."]
 
@@ -629,3 +617,20 @@ position = Vector2( 378, -62 )
 
 [node name="Cargo12" parent="Carrots" instance=ExtResource( 4 )]
 position = Vector2( 326, -71 )
+
+[node name="CarrotSpawners" type="Node2D" parent="."]
+
+[node name="CarrotSpawner" parent="CarrotSpawners" instance=ExtResource( 5 )]
+position = Vector2( 351, -81 )
+
+[node name="CarrotSpawner2" parent="CarrotSpawners" instance=ExtResource( 5 )]
+position = Vector2( 394, -103 )
+
+[node name="CarrotSpawner3" parent="CarrotSpawners" instance=ExtResource( 5 )]
+position = Vector2( 434, -63 )
+
+[node name="CarrotSpawner4" parent="CarrotSpawners" instance=ExtResource( 5 )]
+position = Vector2( 351, -30 )
+
+[node name="Player" parent="CarrotSpawners" instance=ExtResource( 2 )]
+position = Vector2( -52, 2 )

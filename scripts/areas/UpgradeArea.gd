@@ -1,6 +1,6 @@
 extends Node2D
 
-export var remaining_cost = 1
+export var remaining_cost = 15
 export(NodePath) var vendor_area_to_upgrade_path
 onready var vendor_area_to_upgrade := get_node(vendor_area_to_upgrade_path) as Node2D
 
