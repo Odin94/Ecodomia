@@ -570,7 +570,7 @@ position = Vector2( -44, 89 )
 position = Vector2( -80, 89 )
 
 [node name="UpgradeArea" parent="." instance=ExtResource( 11 )]
-position = Vector2( -41, 81 )
+position = Vector2( -148, 77 )
 vendor_area_to_upgrade_path = NodePath("../VendorArea")
 
 [node name="Bunny" parent="." instance=ExtResource( 5 )]
@@ -589,26 +589,43 @@ target_area_path = NodePath("../PurchaseArea")
 position = Vector2( 217, 142 )
 target_area_path = NodePath("../PurchaseArea")
 
-[node name="Cargo" parent="." instance=ExtResource( 4 )]
-position = Vector2( 343, -52 )
-
-[node name="Cargo2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 323, -97 )
-
-[node name="Cargo3" parent="." instance=ExtResource( 4 )]
-position = Vector2( 332, -17 )
-
-[node name="Cargo4" parent="." instance=ExtResource( 4 )]
-position = Vector2( 404, -78 )
-
-[node name="Cargo5" parent="." instance=ExtResource( 4 )]
-position = Vector2( 378, -25 )
-
-[node name="Cargo6" parent="." instance=ExtResource( 4 )]
-position = Vector2( 367, -78 )
-
-[node name="Cargo7" parent="." instance=ExtResource( 4 )]
-position = Vector2( 403, -54 )
-
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( -52, 2 )
+
+[node name="Carrots" type="Node2D" parent="."]
+
+[node name="Cargo" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 343, -52 )
+
+[node name="Cargo2" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 323, -97 )
+
+[node name="Cargo3" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 332, -17 )
+
+[node name="Cargo4" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 404, -78 )
+
+[node name="Cargo5" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 378, -25 )
+
+[node name="Cargo6" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 367, -78 )
+
+[node name="Cargo7" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 418, -36 )
+
+[node name="Cargo8" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 461, -67 )
+
+[node name="Cargo9" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 447, -96 )
+
+[node name="Cargo10" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 408, -53 )
+
+[node name="Cargo11" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 378, -62 )
+
+[node name="Cargo12" parent="Carrots" instance=ExtResource( 4 )]
+position = Vector2( 326, -71 )
