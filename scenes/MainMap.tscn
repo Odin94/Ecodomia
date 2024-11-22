@@ -637,5 +637,11 @@ position = Vector2( 351, -30 )
 position = Vector2( 156, -2 )
 
 [node name="CollectorBunny" parent="." instance=ExtResource( 12 )]
-position = Vector2( 179, -43 )
+visible = true
+position = Vector2( 209, -44 )
 way_points = [ Vector2( 430, -60 ), Vector2( 430, -100 ), Vector2( 320, -100 ), Vector2( 160, 0 ), Vector2( -110, 55 ) ]
+
+[node name="UpgradeArea2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 179, -44 )
+remaining_cost = 3
+cargo_collector_to_spawn_path = NodePath("../CollectorBunny")

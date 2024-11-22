@@ -4,6 +4,9 @@ export var remaining_cost = 15
 export(NodePath) var vendor_area_to_upgrade_path
 onready var vendor_area_to_upgrade := get_node(vendor_area_to_upgrade_path) as Node2D
 
+export(NodePath) var cargo_collector_to_spawn_path
+onready var cargo_collector_to_spawn := get_node(cargo_collector_to_spawn_path) as Node2D
+
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 
 var upgrading_distance := 24
@@ -26,11 +29,17 @@ var coords_by_number := {
 }
 
 func _ready():
-	set_number_sprites(remaining_cost)	
+	set_number_sprites(remaining_cost)
+
+func perform_upgrade():
+	if is_instance_valid(vendor_area_to_upgrade):
+		vendor_area_to_upgrade.upgrade()
+	if is_instance_valid(cargo_collector_to_spawn):
+		cargo_collector_to_spawn.spawn()
 
 func _physics_process(delta):
 	if remaining_cost == 0:
-		vendor_area_to_upgrade.get_upgraded()
+		perform_upgrade()
 		queue_free()
 	cooldown_time = max(0, cooldown_time - delta)
 	if global_position.distance_to(player.global_position) < upgrading_distance and cooldown_time == 0 and remaining_cost - money_in_transit > 0:
@@ -51,10 +60,9 @@ func set_number_sprites(num: int):
 	region_rect.position = coords_by_number[remaining_cost % 10]
 	$Sprite_zeroes.region_rect = region_rect
 	
-	region_rect = $Sprite_tens.region_rect	
+	region_rect = $Sprite_tens.region_rect
 	if remaining_cost / 10 == 0:
 		region_rect.position = coords_by_number["invisible"]
 	else:
 		region_rect.position = coords_by_number[remaining_cost / 10]
 	$Sprite_tens.region_rect = region_rect
-	

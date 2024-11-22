@@ -16,7 +16,7 @@ func _physics_process(delta):
 func is_staffed():
 	return staff_upgrade_purchased or _is_staffed
 
-func get_upgraded():
+func upgrade():
 	var smoke_cloud := smoke_cloud_scene.instance() as Node2D
 	smoke_cloud.global_position = global_position - Vector2(0, 32)
 	smoke_cloud.scale = Vector2(1.5, 1.5)

@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+var smoke_cloud_scene = load("res://scenes/FX/SmokeCloud.tscn")
 export(Array, Vector2) var way_points := [global_position]
 
 var way_point_index := 0
@@ -11,6 +12,10 @@ var is_chilling := false
 
 var collected_cargo := []
 
+func _ready():
+	visible = false
+	$CollisionShape2D.disabled = true
+	is_chilling = true
 
 func process_collecting(delta):
 	if is_chilling:
@@ -33,6 +38,17 @@ func process_collecting(delta):
 func _physics_process(delta):
 	process_collecting(delta)
 
+func spawn():
+	var smoke_cloud := smoke_cloud_scene.instance() as Node2D
+	smoke_cloud.global_position = global_position - Vector2(0, 16)
+	smoke_cloud.scale = Vector2(1.2, 1.2)
+	owner.add_child(smoke_cloud)
+	smoke_cloud.play()
+	
+	yield (get_tree().create_timer(.3), "timeout")
+	visible = true
+	$CollisionShape2D.disabled = false
+	is_chilling = false
 
 func move_to_target(target: Vector2, delta):
 	var velocity = Vector2.ZERO

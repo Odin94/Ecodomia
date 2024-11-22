@@ -7,7 +7,7 @@ var pick_up_distance := 50
 var speed := 200
 
 var status = STATUS.UNHARVESTED
-onready var potential_hosts = []#[get_tree().get_nodes_in_group("Player")[0]]
+onready var potential_hosts = [get_tree().get_nodes_in_group("Player")[0]]
 onready var cargo_stashes = get_tree().get_nodes_in_group("CargoStash")
 var carrying_host: Node2D
 
