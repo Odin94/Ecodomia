@@ -7,8 +7,9 @@ var pick_up_distance := 50
 var speed := 200
 
 var status = STATUS.UNHARVESTED
-onready var player = get_tree().get_nodes_in_group("Player")[0]
+onready var potential_hosts = []#[get_tree().get_nodes_in_group("Player")[0]]
 onready var cargo_stashes = get_tree().get_nodes_in_group("CargoStash")
+var carrying_host: Node2D
 
 var _current_velocity := Vector2.ZERO
 var drag_factor = 0.25
@@ -32,27 +33,27 @@ func move_to_target(target: Vector2, delta):
 	look_at(global_position + _current_velocity)
 
 func process_unharvested():
-	if global_position.distance_to(player.global_position) < pick_up_distance:
-		status = STATUS.PICKING_UP
-		_current_velocity = speed * (global_position - player.global_position).normalized() * 8 # vector away from player
+	for host in potential_hosts:
+		if global_position.distance_to(host.global_position) < pick_up_distance:
+			status = STATUS.PICKING_UP
+			_current_velocity = speed * (global_position - host.global_position).normalized() * 8 # vector away from host
+			carrying_host = host
 		
 func process_picking_up(delta):
-	var target = player.get_pickup_location(self)
+	var target = carrying_host.get_pickup_location(self)
 	
 	move_to_target(target, delta)
 	
 	if global_position.distance_to(target) < 5:
-		player.add_cargo(self)
+		carrying_host.add_cargo(self)
 		status = STATUS.PICKED_UP
 	
-	# TODO: Put area2d on player at pickup_location and transition state when entering it? Or just work off of distance?
-
 func process_picked_up(delta):
-	move_to_target(player.get_pickup_location(self), delta)
+	move_to_target(carrying_host.get_pickup_location(self), delta)
 
 	for stash in cargo_stashes:
 		if global_position.distance_to(stash.global_position) < pick_up_distance:
-			player.remove_cargo(self)
+			carrying_host.remove_cargo(self)
 			status = STATUS.PUTTING_DOWN
 			cargo_stash = get_closest_cargo_stash()
 			cargo_stash.add_cargo(self)
@@ -101,3 +102,10 @@ func get_closest_cargo_stash() -> Node2D:
 			closest_node = node
 	
 	return closest_node
+
+
+func _on_CargoBunnyTrackTimer_timeout():
+	var cargo_bunnies = get_tree().get_nodes_in_group("CollectorBunny")
+	for bunny in cargo_bunnies:
+		if not bunny in potential_hosts:
+			potential_hosts.append(bunny)
