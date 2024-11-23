@@ -61,7 +61,7 @@ func take_money():
 func get_pickup_location(cargo_or_money):
 	var inventory_size = collected_cargo.size() + collected_money.size()
 	var index = inventory_size
-	for i in collected_cargo.size() + collected_money.size():
+	for i in inventory_size:
 		var inventory_item
 		if i < collected_cargo.size():
 			inventory_item = collected_cargo[i]

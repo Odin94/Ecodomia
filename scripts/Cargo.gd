@@ -1,7 +1,7 @@
 extends Node2D
 
 
-enum STATUS {UNHARVESTED, PICKING_UP, PICKED_UP, PUTTING_DOWN, PUT_DOWN, FLYING_TO_BUNNY}
+enum STATUS {SPAWNING, UNHARVESTED, PICKING_UP, PICKED_UP, PUTTING_DOWN, PUT_DOWN, FLYING_TO_BUNNY}
 
 var pick_up_distance := 50
 var speed := 200
@@ -16,10 +16,12 @@ var drag_factor = 0.25
 var cargo_stash: Node2D
 var cargo_stash_putdown_location := Vector2.ZERO
 
+var target: Vector2
+
 var bunny: Node2D
 
-func move_to_target(target: Vector2, delta):
-	var local_speed := speed
+func move_to_target(target: Vector2, delta, passed_speed: int = speed):
+	var local_speed := passed_speed
 	if global_position.distance_to(target) < 25:
 		local_speed = 50
 	if global_position.distance_to(target) < 2:
@@ -31,6 +33,14 @@ func move_to_target(target: Vector2, delta):
 	_current_velocity += change
 	position += _current_velocity * delta
 	look_at(global_position + _current_velocity)
+
+func process_spawning(delta):
+	# target set by CarrotSpawner, TODO: Put getting target in here somehow?
+	move_to_target(target, delta, 100)
+	rotate(-rotation) # make carrot rotation neutral somehow..?
+	
+	if global_position.distance_to(target) < 5:
+		status = STATUS.UNHARVESTED
 
 func process_unharvested():
 	for host in potential_hosts:
@@ -69,6 +79,8 @@ func process_flying_to_bunny(delta):
 
 func _physics_process(delta):
 	match status:
+		STATUS.SPAWNING:
+			process_spawning(delta)
 		STATUS.UNHARVESTED:
 			process_unharvested()
 		STATUS.PICKING_UP:
