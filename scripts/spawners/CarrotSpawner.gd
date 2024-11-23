@@ -16,6 +16,6 @@ func _on_SpawnTimer_timeout():
 	cargo.status = cargo.STATUS.SPAWNING
 	cargo._current_velocity = cargo.speed * Vector2.UP * 2
 	cargo.target = global_position + Vector2(x, y)
-	owner.add_child(cargo)
+	get_parent().add_child(cargo)
 	
 	$SpawnTimer.wait_time = rng.randf_range(.1, 12)

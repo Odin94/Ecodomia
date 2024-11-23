@@ -1,11 +1,15 @@
 extends Node2D
 
+var carrot_spawner_scene = load("res://scenes/spawners/CarrotSpawner.tscn")
+
 export var remaining_cost = 15
 export(NodePath) var vendor_area_to_upgrade_path
 onready var vendor_area_to_upgrade := get_node(vendor_area_to_upgrade_path) as Node2D
 
 export(NodePath) var cargo_collector_to_spawn_path
 onready var cargo_collector_to_spawn := get_node(cargo_collector_to_spawn_path) as Node2D
+
+export(Vector2) var carrot_spawner_location = null
 
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 
@@ -36,6 +40,10 @@ func perform_upgrade():
 		vendor_area_to_upgrade.upgrade()
 	if is_instance_valid(cargo_collector_to_spawn):
 		cargo_collector_to_spawn.spawn()
+	if carrot_spawner_location:
+		var carrot_spawner = carrot_spawner_scene.instance()
+		carrot_spawner.global_position = carrot_spawner_location
+		owner.get_parent().add_child(carrot_spawner)  # if we just take owner, owner will be undefined in carrot_spawner once this upgrader is queue_free'd
 
 func _physics_process(delta):
 	if remaining_cost == 0:
