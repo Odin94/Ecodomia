@@ -11,6 +11,9 @@ onready var cargo_collector_to_spawn := get_node(cargo_collector_to_spawn_path) 
 
 export(Vector2) var carrot_spawner_location = null
 
+export(NodePath) var bunny_spawner_path # path to a whole set of sales nodes, eg. cargo-storage, money-dropoff, purchase-area etc.
+onready var bunny_spawner := get_node(bunny_spawner_path) as Node2D
+
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 
 var upgrading_distance := 24
@@ -34,6 +37,8 @@ var coords_by_number := {
 
 func _ready():
 	set_number_sprites(remaining_cost)
+	if bunny_spawner:
+		bunny_spawner.pause_bunny_spawning = true
 
 func perform_upgrade():
 	if is_instance_valid(vendor_area_to_upgrade):
@@ -44,6 +49,8 @@ func perform_upgrade():
 		var carrot_spawner = carrot_spawner_scene.instance()
 		carrot_spawner.global_position = carrot_spawner_location
 		owner.get_parent().add_child(carrot_spawner)  # if we just take owner, owner will be undefined in carrot_spawner once this upgrader is queue_free'd
+	if bunny_spawner:
+		bunny_spawner.pause_bunny_spawning = false
 
 func _physics_process(delta):
 	if remaining_cost == 0:
@@ -64,13 +71,24 @@ func receive_money():
 
 
 func set_number_sprites(num: int):
+	if remaining_cost / 100 == 0:
+		$Sprite_zeroes.position.x = 6
+		$Sprite_tens.position.x = -5
+	
 	var region_rect = $Sprite_zeroes.region_rect
 	region_rect.position = coords_by_number[remaining_cost % 10]
 	$Sprite_zeroes.region_rect = region_rect
 	
 	region_rect = $Sprite_tens.region_rect
-	if remaining_cost / 10 == 0:
+	if remaining_cost < 10:
 		region_rect.position = coords_by_number["invisible"]
 	else:
-		region_rect.position = coords_by_number[remaining_cost / 10]
+		region_rect.position = coords_by_number[remaining_cost / 10 % 10]
 	$Sprite_tens.region_rect = region_rect
+	
+	region_rect = $Sprite_hundreds.region_rect
+	if remaining_cost < 100:
+		region_rect.position = coords_by_number["invisible"]
+	else:
+		region_rect.position = coords_by_number[remaining_cost / 100]
+	$Sprite_hundreds.region_rect = region_rect

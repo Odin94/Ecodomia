@@ -2,12 +2,12 @@ extends KinematicBody2D
 
 var money_scene = load("res://scenes/Money.tscn")
 
-export(NodePath) var target_area_path
-onready var target_area := get_node(target_area_path) as Node2D
+var target_area: Node2D
+var money_drop_off_area: Node2D
+var bunny_spawner: Node2D
 
-onready var money_drop_off_area: Node2D = get_closest_money_drop_off_area()
 # TODO: Eventually only get bunnies in your own queue, maybe give the bunny access to its spawner and just take the spawner list here
-onready var bunnies = get_tree().get_nodes_in_group("Bunny")
+onready var bunnies = bunny_spawner.spawned_bunnies
 var queue_position: int
 
 var velocity := Vector2.ZERO
@@ -17,6 +17,11 @@ var queue_standing_distance = 20
 enum STATUS {IN_QUEUE, SATISFIED}
 
 var status = STATUS.IN_QUEUE
+
+func _ready():
+	assert(is_instance_valid(target_area), "Invalid target_area in bunny, set in spawner!")
+	assert(is_instance_valid(money_drop_off_area), "Invalid money_drop_off_area in bunny, set in spawner!")
+	assert(is_instance_valid(bunny_spawner), "Invalid bunny_spawner in bunny, set in spawner!")
 
 func process_in_queue(delta):
 	var closer_bunnies = get_closer_bunnies()

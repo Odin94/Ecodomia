@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/areas/VendorArea.gd" type="Script" id=1]
 [ext_resource path="res://assets/Sprout Lands - Sprites - Basic pack/Characters/Basic Charakter Spritesheet.png" type="Texture" id=2]
+[ext_resource path="res://assets/tiles/pyxel_B_tiles.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -28,3 +29,9 @@ position = Vector2( 0, -8 )
 frames = SubResource( 3 )
 frame = 1
 playing = true
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -9 )
+texture = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 32, 32 )
