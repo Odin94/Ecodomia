@@ -1,6 +1,7 @@
 extends Node2D
 
 var stash := []
+var stash_limit := 100
 
 func _physics_process(delta):
 	# updates continuously to make sure cargos have the right location
@@ -14,7 +15,10 @@ func _physics_process(delta):
 
 
 func add_cargo(cargo: Node2D):
-	stash.append(cargo)
+	if stash.size() >= stash_limit:
+		cargo.queue_free()
+	else:
+		stash.append(cargo)
 
 
 func spend_cargo():

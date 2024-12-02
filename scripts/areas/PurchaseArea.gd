@@ -17,10 +17,9 @@ func _process(delta):
 		if bunny.global_position.distance_to(global_position) < 2 and vendor_area.is_staffed():
 			var cargo = cargo_stash.spend_cargo()
 			if cargo:
-				# TODO: Make cargo fly to bunny
 				bunnies_awaiting_satisfaction.append(bunny)
 				cargo.give_to_bunny(bunny)
-				yield(get_tree().create_timer(.5), "timeout")
+				yield (get_tree().create_timer(.5), "timeout")
 				bunny.get_satisfied()
 
 

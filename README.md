@@ -11,7 +11,10 @@ Credits:
 
 <!-- TODOs: 
 NEXT:
-* Give player something to do while first automation runs? Maybe a second stand you can buy for cheap?
+* More carrot spawners
+* Invest in marketing to speed up how fast and how many bunnies come to the checkout
+* Add gate you can open to unlock new area with many, many carrots (so you need to automate your stuff through)
+  * Maybe make automation for 2nd sales point much more expensive to encourage deferring that to after opening the door?
 
 * Somehow move carrot-balance such that you need 2 extra spawners and 2 collector bunnies to fully supply your table
   * Maybe randomly spawn gold bunnies that take 10 carrots and pay 15 moneys? To prevent carrots stacking up more and more over time

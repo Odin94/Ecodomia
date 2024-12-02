@@ -1,10 +1,15 @@
 extends Node2D
 
 var stash := []
+var stash_limit := 100
 
 func add_money(money: Node2D):
-	stash.append(money)
 	money.drop_off_area = self
+	if stash.size() >= stash_limit:
+		money.queue_free()
+	else:
+		stash.append(money)
+
 
 func remove_money(money: Node2D):
 	stash.erase(money)
