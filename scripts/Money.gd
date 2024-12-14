@@ -26,7 +26,12 @@ func process_dropping_off(delta):
 		status = STATUS.LYING_AROUND
 	
 	
-func process_lying_around(_delta):
+func process_lying_around(delta):
+	var target = drop_off_area.get_put_down_location(self)
+	move_to_target(target, delta)
+	if global_position.distance_to(target) < 2:
+		status = STATUS.LYING_AROUND
+		
 	if global_position.distance_to(player.global_position) < pick_up_distance:
 		get_picked_up()
 

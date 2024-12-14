@@ -9,7 +9,6 @@ var speed := 20
 
 func _physics_process(delta):
 	if moving:
-		print("Moving by speed * delta")
 		move_to_target($TopBody, global_position + top_target_position_offset, speed * delta)
 		move_to_target($BottomBody, global_position + bottom_target_position_offset, speed * delta)
 
