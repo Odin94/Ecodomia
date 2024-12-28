@@ -27,6 +27,7 @@ func _physics_process(delta):
 # triggered by upgrader
 func purchase():
 	global_position = position_when_bought
+	$SmokeCloud.visible = true
 	$SmokeCloud.play()
 	yield (get_tree().create_timer(.2), "timeout")
 	visible = true

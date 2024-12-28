@@ -27,7 +27,12 @@ var prerequisite_upgrades = []
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 
 var upgrading_distance := 24
-var cooldown_time := 0.0
+
+var full_cooldown_time := 0.25
+var min_cooldown_time = 0.05
+var cooldown_reduction_factor := 0.03
+var cooldown_time := full_cooldown_time
+var current_cooldown_time := 0.0
 
 var money_in_transit := 0
 
@@ -81,13 +86,18 @@ func _physics_process(delta):
 	if remaining_cost == 0:
 		perform_upgrade()
 		queue_free()
-	cooldown_time = max(0, cooldown_time - delta)
-	if global_position.distance_to(player.global_position) < upgrading_distance and cooldown_time == 0 and remaining_cost - money_in_transit > 0:
-		cooldown_time = 0.25
-		var money = player.take_money()
-		if money:
-			money_in_transit += 1
-			money.get_spent(self)
+	current_cooldown_time = max(0, current_cooldown_time - delta)
+	if global_position.distance_to(player.global_position) < upgrading_distance:
+		cooldown_time = max(cooldown_time - delta * cooldown_reduction_factor, min_cooldown_time)
+		if current_cooldown_time == 0 and remaining_cost - money_in_transit > 0:
+			current_cooldown_time = cooldown_time
+			print(cooldown_time)
+			var money = player.take_money()
+			if money:
+				money_in_transit += 1
+				money.get_spent(self)
+	else:
+		cooldown_time = full_cooldown_time
 
 func receive_money():
 	money_in_transit -= 1

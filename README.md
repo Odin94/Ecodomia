@@ -11,6 +11,10 @@ Credits:
 
 <!-- TODOs: 
 NEXT:
+* Add a warehouse where you can collect placeable items that you can put around your house
+* Make house-size upgradeable
+* Create an upstairs environment with a trick where if you walk up the stairs it switches the tiles to being upstairsy
+
 * Invest in marketing to speed up how fast and how many bunnies come to the checkout
 * Maybe randomly spawn gold bunnies that take 10 carrots and pay 15 moneys? To prevent carrots stacking up more and more over time
 
