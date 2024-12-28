@@ -17,6 +17,9 @@ onready var bunny_spawner := get_node(bunny_spawner_path) as Node2D
 export(NodePath) var gate_path
 onready var gate_to_open := get_node(gate_path) as Node2D
 
+export(NodePath) var purchaseable_path # Anything with a "purchase" function
+onready var purchaseable := get_node(purchaseable_path) as Node2D
+
 
 export(Array, NodePath) var prerequisite_upgrades_paths = []
 var prerequisite_upgrades = []
@@ -60,13 +63,14 @@ func perform_upgrade():
 	if carrot_spawner_location:
 		var carrot_spawner = carrot_spawner_scene.instance()
 		carrot_spawner.global_position = carrot_spawner_location
-		owner.get_parent().add_child(carrot_spawner)  # if we just take owner, owner will be undefined in carrot_spawner once this upgrader is queue_free'd
+		owner.get_parent().add_child(carrot_spawner) # if we just take owner, owner will be undefined in carrot_spawner once this upgrader is queue_free'd
 	if bunny_spawner:
 		bunny_spawner.pause_bunny_spawning = false
 	if gate_to_open:
-		print(gate_to_open)
-		print(gate_path)
 		gate_to_open.start_opening()
+		
+	if is_instance_valid(purchaseable): # todo: Turn all/most of these upgradeables into purchaseables?
+		purchaseable.purchase()
 
 func _physics_process(delta):
 	for upgrade in prerequisite_upgrades:

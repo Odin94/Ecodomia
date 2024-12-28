@@ -16,7 +16,6 @@ func start_opening():
 	$BottomBody/CollisionShape2D.disabled = true
 	$TopBody/CollisionShape2D.disabled = true
 	moving = true
-	print("Starting to move")
 
 
 func move_to_target(kinematic: KinematicBody2D, target: Vector2, delta):

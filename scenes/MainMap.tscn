@@ -810,14 +810,19 @@ prerequisite_upgrades_paths = [ NodePath("../upgrade_CarrotSpawner3") ]
 
 [node name="DoorOpenUpgradeArea" parent="." instance=ExtResource( 11 )]
 position = Vector2( 636, 163 )
-remaining_cost = 220
+remaining_cost = 1
 gate_path = NodePath("../Gate")
 
 [node name="Gate" parent="." instance=ExtResource( 13 )]
 position = Vector2( 683, 160 )
 
+[node name="upgrade_house" parent="." instance=ExtResource( 11 )]
+position = Vector2( 1280, 54 )
+remaining_cost = 1
+purchaseable_path = NodePath("../UpgradeHouse")
+
 [node name="UpgradeHouse" parent="." instance=ExtResource( 14 )]
 position = Vector2( 1190, -195 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1258, 72 )
+position = Vector2( 210, -10 )
