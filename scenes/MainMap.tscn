@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://assets/tiles/pyxel_map.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://scenes/CollectorBunny.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/Gate.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/UpgradeHouse.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/Furniture.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -826,3 +827,7 @@ position = Vector2( 1190, -195 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 210, -10 )
+
+[node name="Furniture" parent="." instance=ExtResource( 15 )]
+position = Vector2( 24, -15 )
+furniture_name = "painting_flowers"

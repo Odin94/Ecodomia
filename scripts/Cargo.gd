@@ -12,7 +12,7 @@ onready var cargo_stashes = get_tree().get_nodes_in_group("CargoStash")
 var carrying_host: Node2D
 
 var _current_velocity := Vector2.ZERO
-var drag_factor = 0.25
+var drag_factor := 0.25
 var cargo_stash: Node2D
 var cargo_stash_putdown_location := Vector2.ZERO
 

@@ -7,6 +7,7 @@ var speed := 200
 
 var collected_cargo := []
 var collected_money := []
+var held_furniture = null # set by Furniture
 
 func walk():
 	velocity = Vector2()
