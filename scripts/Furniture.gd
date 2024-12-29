@@ -4,7 +4,7 @@ export var furniture_name: String
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 onready var progress_bar := $Control/ProgressBar
 
-enum STATUS {LYING_AROUND, PICKING_UP, PICKED_UP, PUT_DOWN}
+enum STATUS {LYING_AROUND, PICKED_UP, PUT_DOWN}
 var status = STATUS.LYING_AROUND
 
 var pick_up_distance := 50
@@ -19,7 +19,8 @@ func _on_PickupTimer_timeout():
 	var is_picking_up = status == STATUS.PUT_DOWN and Input.is_action_pressed("FurnitureInteraction")
 
 	if status == STATUS.LYING_AROUND or is_picking_up:
-		status = STATUS.PICKING_UP
+		status = STATUS.PICKED_UP
+		player.held_furniture = self		
 		progress_bar.visible = false
 
 func process_lying_around(_delta):
@@ -32,15 +33,6 @@ func process_lying_around(_delta):
 		progress_bar.visible = false
 	var elapsed_time = $PickupTimer.wait_time - $PickupTimer.time_left
 	progress_bar.value = elapsed_time / $PickupTimer.wait_time * progress_bar.max_value
-
-
-func process_picking_up(delta):
-	var target = player.global_position + Vector2(-20, -20)
-	move_to_target(target, delta)
-	
-	if global_position.distance_to(target) < 5:
-		player.held_furniture = self
-		status = STATUS.PICKED_UP
 
 
 func process_picked_up(delta):
@@ -71,8 +63,6 @@ func _physics_process(delta):
 	match status:
 		STATUS.LYING_AROUND:
 			process_lying_around(delta)
-		STATUS.PICKING_UP:
-			process_picking_up(delta)
 		STATUS.PICKED_UP:
 			process_picked_up(delta)
 		STATUS.PUT_DOWN:

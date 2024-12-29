@@ -12,12 +12,10 @@ func _ready():
 func _physics_process(delta):
 	if player.held_furniture:
 		self.visible = true
-		target = snap_to_grid(player.global_position) - Vector2(grid_size / 2, grid_size / 2)
+		target = snap_to_grid(player.global_position)
 		target = adjust_for_movement_keys(target)
 		
 		move_to_target(target, delta)
-		if global_position.distance_to(target) > 100:
-			global_position = target
 		
 		if Input.is_action_just_pressed("FurnitureInteraction"):
 			var furniture = player.held_furniture
@@ -25,6 +23,7 @@ func _physics_process(delta):
 			furniture.put_down(target)
 	else:
 		self.visible = false
+		self.global_position = player.global_position
 		
 		
 func snap_to_grid(pos: Vector2):
