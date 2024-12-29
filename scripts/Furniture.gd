@@ -16,10 +16,13 @@ func _ready():
 	set_sprite(furniture_name)
 
 func _on_PickupTimer_timeout():
-	status = STATUS.PICKING_UP
-	progress_bar.visible = false
+	var is_picking_up = status == STATUS.PUT_DOWN and Input.is_action_pressed("FurnitureInteraction")
 
-func process_lying_around(delta):
+	if status == STATUS.LYING_AROUND or is_picking_up:
+		status = STATUS.PICKING_UP
+		progress_bar.visible = false
+
+func process_lying_around(_delta):
 	if global_position.distance_to(player.global_position) < pick_up_distance and not player.held_furniture:
 		progress_bar.visible = true
 		if $PickupTimer.is_stopped():
@@ -32,7 +35,7 @@ func process_lying_around(delta):
 
 
 func process_picking_up(delta):
-	var target = player.get_pickup_location(self)
+	var target = player.global_position + Vector2(-20, -20)
 	move_to_target(target, delta)
 	
 	if global_position.distance_to(target) < 5:
@@ -41,11 +44,28 @@ func process_picking_up(delta):
 
 
 func process_picked_up(delta):
-	move_to_target(player.get_pickup_location(self), delta)
+	move_to_target(player.global_position + Vector2(-20, -20), delta)
+
 
 func put_down(location: Vector2):
 	status = STATUS.PUT_DOWN
+	self.global_position = location
+	self.rotation = 0
+	$PickupDelayTimer.start()
 
+func process_put_down(_delta):
+	if not $PickupDelayTimer.is_stopped():
+		return
+
+	if global_position.distance_to(player.global_position) < pick_up_distance and not player.held_furniture and Input.is_action_pressed("FurnitureInteraction"):
+		progress_bar.visible = true
+		if $PickupTimer.is_stopped():
+			$PickupTimer.start()
+	else:
+		$PickupTimer.stop()
+		progress_bar.visible = false
+	var elapsed_time = $PickupTimer.wait_time - $PickupTimer.time_left
+	progress_bar.value = elapsed_time / $PickupTimer.wait_time * progress_bar.max_value
 
 func _physics_process(delta):
 	match status:
@@ -56,9 +76,9 @@ func _physics_process(delta):
 		STATUS.PICKED_UP:
 			process_picked_up(delta)
 		STATUS.PUT_DOWN:
-			pass
+			process_put_down(delta)
 		_:
-			print("Cargo unknown status: ", status)
+			print("Furniture unknown status: ", status)
 
 var furniture_sprite_by_number := {
 	"painting_flowers": Vector2(0, 0),
