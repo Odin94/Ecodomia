@@ -30,10 +30,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="ProgressBar" type="ProgressBar" parent="Control"]
-margin_left = 17.0
-margin_top = 6.0
-margin_right = 59.0
-margin_bottom = 20.0
+margin_left = -10.0
+margin_top = -17.0
+margin_right = 32.0
+margin_bottom = -3.0
 rect_min_size = Vector2( 20, 5 )
 rect_scale = Vector2( 0.5, 0.5 )
 custom_styles/fg = SubResource( 1 )

@@ -17,7 +17,6 @@ func _ready():
 
 func _on_PickupTimer_timeout():
 	status = STATUS.PICKING_UP
-	_current_velocity = speed * (global_position - player.global_position).normalized() * 8 # vector away from host
 	progress_bar.visible = false
 
 func process_lying_around(delta):
