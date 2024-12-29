@@ -824,7 +824,7 @@ remaining_cost = 1
 purchaseable_path = NodePath("../UpgradeHouse")
 
 [node name="UpgradeHouse" parent="." instance=ExtResource( 14 )]
-position = Vector2( 1190, -195 )
+position = Vector2( 1168, -208 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 210, -10 )
