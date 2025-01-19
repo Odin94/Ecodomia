@@ -4,8 +4,8 @@ export var furniture_name: String
 onready var player = get_tree().get_nodes_in_group("Player")[0]
 onready var progress_bar := $Control/ProgressBar
 
-enum STATUS {LYING_AROUND, PICKED_UP, PUT_DOWN}
-var status = STATUS.LYING_AROUND
+enum STATUS {UNPURCHASED, LYING_AROUND, PICKED_UP, PUT_DOWN}
+var status = STATUS.UNPURCHASED
 
 var pick_up_distance := 50
 var speed := 200
@@ -15,6 +15,10 @@ var _current_velocity := Vector2.ZERO
 func _ready():
 	set_sprite(furniture_name)
 	$Control/StatsLabel.text = get_stat_text()
+
+func purchase():
+	if status == STATUS.UNPURCHASED:
+		status = STATUS.LYING_AROUND
 
 func _on_PickupTimer_timeout():
 	var is_picking_up = status == STATUS.PUT_DOWN and Input.is_action_pressed("FurnitureInteraction")
@@ -64,6 +68,8 @@ func process_put_down(_delta):
 
 func _physics_process(delta):
 	match status:
+		STATUS.UNPURCHASED:
+			pass
 		STATUS.LYING_AROUND:
 			process_lying_around(delta)
 		STATUS.PICKED_UP:
@@ -83,16 +89,16 @@ var sprite_by_name := {
 	"sunflower": Vector2(48, 0),
 	"sprout_flower": Vector2(64, 0),
 	"blue_flower": Vector2(80, 0),
-	"bed_green": Vector2(0, 16),
-	"bed_blue": Vector2(9, 16),
-	"bed_red": Vector2(18, 16),
+	"bed_green": Vector2(0, 32),
+	"bed_blue": Vector2(8, 32),
+	"bed_red": Vector2(16, 32),
 	
-	"cupboard": Vector2(32, 48),
+	"cupboard": Vector2(48, 32),
 }
 var sprite_by_name_2 := {
-	"bed_green": Vector2(0, 0),
-	"bed_blue": Vector2(9, 0),
-	"bed_red": Vector2(18, 0),
+	"bed_green": Vector2(0, 16),
+	"bed_blue": Vector2(8, 16),
+	"bed_red": Vector2(16, 16),
 }
 func set_sprite(furniture_name: String):
 	$Sprite.region_rect.position = sprite_by_name.get(furniture_name, Vector2(-99, -99))
