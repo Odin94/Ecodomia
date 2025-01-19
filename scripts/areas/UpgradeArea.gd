@@ -91,7 +91,6 @@ func _physics_process(delta):
 		cooldown_time = max(cooldown_time - delta * cooldown_reduction_factor, min_cooldown_time)
 		if current_cooldown_time == 0 and remaining_cost - money_in_transit > 0:
 			current_cooldown_time = cooldown_time
-			print(cooldown_time)
 			var money = player.take_money()
 			if money:
 				money_in_transit += 1

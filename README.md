@@ -2,12 +2,18 @@
 
 Start from humble beginnings and slowly build a whole town and power up your character.
 
-Credits:
+## How to play
+Collect carrots, put them on the table and sit in the sales chair to sell them to bunnies. Collect money and spend it on upgrades.
+
+* Pick up furniture by holding SPACE
+* See furniture stats by holding ALT
+
+## Credits:
 * Rogue character by [Calciumtrice](https://opengameart.org/content/animated-rogue)
 * Sproutlands asset pack (eg. the bunnies, some furniture, some house tiles) by [cupnooble](https://cupnooble.itch.io/sprout-lands-asset-pack)
 * Smoke FX by [BDragon1727](https://bdragon1727.itch.io/free-smoke-fx-pixel)
 * Numbers, some tables, chairs, fence, grass & flowers made by me
-
+* Font: GoogleFonts Roboto
 
 <!-- TODOs: 
 NEXT:

@@ -3,7 +3,8 @@ extends KinematicBody2D
 var velocity := Vector2()
 var direction := Vector2()
 
-var speed := 200
+var original_speed := 200.0
+var speed := 200.0
 
 var collected_cargo := []
 var collected_money := []
@@ -40,6 +41,7 @@ func walk():
 	
 
 func _physics_process(_delta):
+	speed = original_speed * (1 + HomeBase.bonus_speed_percent)
 	walk()
 
 func add_cargo(cargo):

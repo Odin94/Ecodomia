@@ -14,14 +14,16 @@ var _current_velocity := Vector2.ZERO
 
 func _ready():
 	set_sprite(furniture_name)
+	$Control/StatsLabel.text = get_stat_text()
 
 func _on_PickupTimer_timeout():
 	var is_picking_up = status == STATUS.PUT_DOWN and Input.is_action_pressed("FurnitureInteraction")
 
 	if status == STATUS.LYING_AROUND or is_picking_up:
 		status = STATUS.PICKED_UP
-		player.held_furniture = self		
+		player.held_furniture = self
 		progress_bar.visible = false
+		HomeBase.remove_furniture(self)
 
 func process_lying_around(_delta):
 	if global_position.distance_to(player.global_position) < pick_up_distance and not player.held_furniture:
@@ -43,6 +45,7 @@ func put_down(location: Vector2):
 	status = STATUS.PUT_DOWN
 	self.global_position = location
 	self.rotation = 0
+	HomeBase.place_furniture(self)
 	$PickupDelayTimer.start()
 
 func process_put_down(_delta):
@@ -70,7 +73,10 @@ func _physics_process(delta):
 		_:
 			print("Furniture unknown status: ", status)
 
-var furniture_sprite_by_number := {
+	$Control/StatsLabel.visible = HomeBase.show_stats
+	$Control.set_rotation(-rotation) # always keep text upright
+
+var sprite_by_name := {
 	"painting_flowers": Vector2(0, 0),
 	"painting_day": Vector2(16, 0),
 	"painting_night": Vector2(32, 0),
@@ -83,15 +89,78 @@ var furniture_sprite_by_number := {
 	
 	"cupboard": Vector2(32, 48),
 }
-var furniture_sprite_by_number_2 := {
+var sprite_by_name_2 := {
 	"bed_green": Vector2(0, 0),
 	"bed_blue": Vector2(9, 0),
 	"bed_red": Vector2(18, 0),
 }
 func set_sprite(furniture_name: String):
-	$Sprite.region_rect.position = furniture_sprite_by_number.get(furniture_name, Vector2(-99, -99))
-	$Sprite2.region_rect.position = furniture_sprite_by_number_2.get(furniture_name, Vector2(-99, -99))
+	$Sprite.region_rect.position = sprite_by_name.get(furniture_name, Vector2(-99, -99))
+	$Sprite2.region_rect.position = sprite_by_name_2.get(furniture_name, Vector2(-99, -99))
 
+var bonus_by_name := {
+	"painting_flowers": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.50
+	},
+	"painting_day": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"painting_night": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"sunflower": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"sprout_flower": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"blue_flower": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"bed_green": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"bed_blue": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"bed_red": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	},
+	"cupboard": {
+		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
+		"amount": 0.0
+	}
+}
+onready var bonus_type = bonus_by_name[furniture_name]["type"] # as HomeBase.BONUS_TYPE
+onready var bonus_amount := bonus_by_name[furniture_name]["amount"] as float
+
+func get_stat_text():
+	var prefix = "+"
+	var amount = String(bonus_amount * 100) + "%"
+	var type = ""
+
+	match bonus_type:
+		HomeBase.BONUS_TYPE.NONE:
+			amount = ""
+			prefix = ""
+		HomeBase.BONUS_TYPE.PLAYER_SPEED:
+			type = "run speed"
+		HomeBase.BONUS_TYPE.PRICE_REDUCTION:
+			type = "prices"
+			prefix = "-"
+		_:
+			type = "unknown"
+
+	return prefix + amount + " " + type
 
 func move_to_target(target: Vector2, delta, passed_speed: int = speed):
 	var local_speed := passed_speed
