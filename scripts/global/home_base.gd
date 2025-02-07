@@ -2,7 +2,7 @@ extends Node
 
 var show_stats := true
 
-enum BONUS_TYPE {NONE, PLAYER_SPEED, PRICE_REDUCTION}
+enum BONUS_TYPE {NONE, PLAYER_SPEED, PRICE_REDUCTION, DASH}
 
 var bonus_speed_percent := 0.0
 var price_reduction_percent := 0.0

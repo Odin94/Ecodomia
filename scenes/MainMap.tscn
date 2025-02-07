@@ -884,11 +884,6 @@ purchaseable_path = NodePath("../UpgradeHouse")
 [node name="UpgradeHouse" parent="." instance=ExtResource( 14 )]
 position = Vector2( 1168, -208 )
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1313, 225 )
-
-[node name="FurniturePlacer" parent="." instance=ExtResource( 16 )]
-
 [node name="Furniture_collection" type="Node2D" parent="."]
 
 [node name="Furniture_test" parent="Furniture_collection" instance=ExtResource( 15 )]
@@ -942,3 +937,8 @@ purchaseable_path = NodePath("../Furniture5")
 
 [node name="VendorBunny" parent="Furniture_collection" instance=ExtResource( 18 )]
 position = Vector2( 1368, 442 )
+
+[node name="FurniturePlacer" parent="." instance=ExtResource( 16 )]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1313, 225 )
