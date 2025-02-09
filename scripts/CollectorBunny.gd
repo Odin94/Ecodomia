@@ -11,6 +11,7 @@ var speed = 50
 var is_chilling := false
 
 var collected_cargo := []
+var cargo_limit := 100
 
 func _ready():
 	visible = false
@@ -73,7 +74,10 @@ func move_to_target(target: Vector2, delta):
 
 
 func add_cargo(cargo):
-	collected_cargo.append(cargo)
+	if cargo.size() >= cargo_limit:
+		cargo.queue_free()
+	else:
+		collected_cargo.append(cargo)
 
 func remove_cargo(cargo):
 	collected_cargo.erase(cargo)
