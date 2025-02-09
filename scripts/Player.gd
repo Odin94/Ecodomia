@@ -38,14 +38,13 @@ func move(delta: float):
 		elif velocity.x < 0:
 			$AnimatedSprite.flip_h = true
 		if dash_skill.is_dashing:
-			$AnimatedSprite.animation = "default"
+			$AnimatedSprite.animation = "dashing"
 		else:
 			$AnimatedSprite.animation = "running"
 	else:
 		$AnimatedSprite.animation = "idle"
 
-	# dash
-	if Input.is_action_just_pressed("FurnitureInteraction") and dash_skill.current_dashes > 0 and velocity.length() > 0:
+	if Input.is_action_just_pressed("FurnitureInteraction") and dash_skill.current_dashes > 0 and velocity.length() > 0 and held_furniture == null:
 		dash_skill.dash()
 	
 	if dash_skill.is_dashing:
