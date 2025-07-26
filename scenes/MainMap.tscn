@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://assets/tiles/pyxel_map.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
@@ -15,7 +15,6 @@
 [ext_resource path="res://scenes/Gate.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/places/UpgradeHouse.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/Furniture.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scenes/FurniturePlacer.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/Sprout Lands - Sprites - premium pack/Objects/Piknik blanket.png" type="Texture" id=17]
 [ext_resource path="res://scenes/VendorBunny.tscn" type="PackedScene" id=18]
 
@@ -938,8 +937,6 @@ purchaseable_path = NodePath("../Furniture5")
 [node name="VendorBunny" parent="Furniture_collection" instance=ExtResource( 18 )]
 position = Vector2( 1368, 442 )
 
-[node name="FurniturePlacer" parent="." instance=ExtResource( 16 )]
-
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1313, 225 )
+position = Vector2( -74, -12 )
 z_index = 5

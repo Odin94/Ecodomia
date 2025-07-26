@@ -9,7 +9,7 @@ var target := Vector2.ZERO
 func _ready():
 	self.visible = false
 
-func _physics_process(delta):
+func player_triggered_process(delta):
 	if player.held_furniture:
 		self.visible = true
 		target = snap_to_grid(player.global_position)

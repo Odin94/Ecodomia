@@ -55,6 +55,8 @@ func move(delta: float):
 	else:
 		move_and_slide(velocity * speed)
 	
+	$FurniturePlacer.player_triggered_process(delta)
+
 
 func _physics_process(delta):
 	speed = original_speed * (1 + HomeBase.bonus_speed_percent)
