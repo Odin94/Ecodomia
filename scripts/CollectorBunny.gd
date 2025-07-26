@@ -74,7 +74,7 @@ func move_to_target(target: Vector2, delta):
 
 
 func add_cargo(cargo):
-	if cargo.size() >= cargo_limit:
+	if collected_cargo.size() >= cargo_limit:
 		cargo.queue_free()
 	else:
 		collected_cargo.append(cargo)
