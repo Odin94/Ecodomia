@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/tiles/numbers.png" type="Texture" id=2]
 [ext_resource path="res://assets/area_cover.png" type="Texture" id=3]
 
-[node name="UpgradeArea" type="Node2D"]
+[node name="UpgradeArea" type="Node2D" groups=["UpgradeArea"]]
 script = ExtResource( 1 )
 
 [node name="Sprite_hundreds" type="Sprite" parent="."]

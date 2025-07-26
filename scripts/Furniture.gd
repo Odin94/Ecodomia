@@ -118,28 +118,28 @@ var bonus_by_name := {
 		"amount": 0.0
 	},
 	"sunflower": {
-		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
-		"amount": 0.0
+		"type": HomeBase.BONUS_TYPE.PRICE_REDUCTION,
+		"amount": 0.5
 	},
 	"sprout_flower": {
 		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
 		"amount": 0.0
 	},
 	"blue_flower": {
-		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
-		"amount": 0.0
+		"type": HomeBase.BONUS_TYPE.PRICE_REDUCTION,
+		"amount": 0.01
 	},
 	"bed_green": {
-		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
-		"amount": 0.0
+		"type": HomeBase.BONUS_TYPE.DASH,
+		"amount": 1.0
 	},
 	"bed_blue": {
-		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
-		"amount": 0.0
+		"type": HomeBase.BONUS_TYPE.DASH,
+		"amount": 1.0
 	},
 	"bed_red": {
-		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,
-		"amount": 0.0
+		"type": HomeBase.BONUS_TYPE.DASH,
+		"amount": 1.0
 	},
 	"cupboard": {
 		"type": HomeBase.BONUS_TYPE.PLAYER_SPEED,

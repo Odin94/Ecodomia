@@ -2,7 +2,8 @@ extends Node2D
 
 var carrot_spawner_scene = load("res://scenes/spawners/CarrotSpawner.tscn")
 
-export var remaining_cost = 15
+export var original_cost = 15
+onready var remaining_cost = original_cost
 export(NodePath) var vendor_area_to_upgrade_path
 onready var vendor_area_to_upgrade := get_node(vendor_area_to_upgrade_path) as Node2D
 
@@ -83,7 +84,7 @@ func _physics_process(delta):
 			return
 	visible = true
 	
-	if remaining_cost == 0:
+	if remaining_cost <= 0:
 		perform_upgrade()
 		queue_free()
 	current_cooldown_time = max(0, current_cooldown_time - delta)
@@ -105,24 +106,27 @@ func receive_money():
 
 
 func set_number_sprites(num: int):
+	if num > 999 or num < 0:
+		num = 0
 	if remaining_cost / 100 == 0:
 		$Sprite_zeroes.position.x = 6
 		$Sprite_tens.position.x = -5
 	
+	var zero_vec = coords_by_number[0]
 	var region_rect = $Sprite_zeroes.region_rect
-	region_rect.position = coords_by_number[remaining_cost % 10]
+	region_rect.position = coords_by_number.get(remaining_cost % 10, zero_vec)
 	$Sprite_zeroes.region_rect = region_rect
 	
 	region_rect = $Sprite_tens.region_rect
 	if remaining_cost < 10:
 		region_rect.position = coords_by_number["invisible"]
 	else:
-		region_rect.position = coords_by_number[remaining_cost / 10 % 10]
+		region_rect.position = coords_by_number.get(remaining_cost / 10 % 10, zero_vec)
 	$Sprite_tens.region_rect = region_rect
 	
 	region_rect = $Sprite_hundreds.region_rect
 	if remaining_cost < 100:
 		region_rect.position = coords_by_number["invisible"]
 	else:
-		region_rect.position = coords_by_number[remaining_cost / 100]
+		region_rect.position = coords_by_number.get(remaining_cost / 100, zero_vec)
 	$Sprite_hundreds.region_rect = region_rect
