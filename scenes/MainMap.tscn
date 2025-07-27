@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://assets/tiles/pyxel_map.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
@@ -15,10 +15,8 @@
 [ext_resource path="res://scenes/Gate.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/places/UpgradeHouse.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/Furniture.tscn" type="PackedScene" id=15]
-[ext_resource path="res://scripts/Furniture.gd" type="Script" id=16]
 [ext_resource path="res://assets/Sprout Lands - Sprites - premium pack/Objects/Piknik blanket.png" type="Texture" id=17]
 [ext_resource path="res://scenes/VendorBunny.tscn" type="PackedScene" id=18]
-[ext_resource path="res://scripts/areas/UpgradeArea.gd" type="Script" id=19]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -941,12 +939,10 @@ position = Vector2( 1368, 442 )
 
 [node name="Furniture6" parent="Furniture_collection" instance=ExtResource( 15 )]
 position = Vector2( -204, -20 )
-script = ExtResource( 16 )
 furniture_name = "sunflower"
 
 [node name="UpgradeArea6" parent="Furniture_collection" instance=ExtResource( 11 )]
 position = Vector2( -207, 17 )
-script = ExtResource( 19 )
 original_cost = 1
 purchaseable_path = NodePath("../Furniture6")
 

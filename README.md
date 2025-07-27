@@ -24,6 +24,9 @@ NEXT:
 * Invest in marketing to speed up how fast and how many bunnies come to the checkout
 * Maybe randomly spawn gold bunnies that take 10 carrots and pay 15 moneys? To prevent carrots stacking up more and more over time
 
+* Add new industries (squirrel lumberjacks to build new houses to spawn important NPCs, maybe hedgehog miners)
+
+* Add minigames - racing, dodging bullet-hell, ..?
 
 EVENTUALLY:
 * Unify all move-y prefabs (cargo, money) in some reasonable way

@@ -24,10 +24,11 @@ func _on_PickupTimer_timeout():
 	var is_picking_up = status == STATUS.PUT_DOWN and Input.is_action_pressed("FurnitureInteraction")
 
 	if status == STATUS.LYING_AROUND or is_picking_up:
-		status = STATUS.PICKED_UP
-		player.held_furniture = self
-		progress_bar.visible = false
-		HomeBase.remove_furniture(self)
+		if player.held_furniture == null:
+			player.held_furniture = self
+			status = STATUS.PICKED_UP
+			progress_bar.visible = false
+			HomeBase.remove_furniture(self)
 
 func process_lying_around(_delta):
 	if global_position.distance_to(player.global_position) < pick_up_distance and not player.held_furniture:
