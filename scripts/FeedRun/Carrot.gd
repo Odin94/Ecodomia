@@ -13,12 +13,15 @@ var shadow_original_scale: Vector2
 var tween: Tween
 var velocity := Vector2.ZERO
 var overlapping_carrots := []
+var is_attracted := false
+var attracted_to: Node2D = null
 
 onready var area := $Area2D
 onready var sprite := $Sprite
 onready var shadow := $Shadow
 
 func _ready():
+	add_to_group("carrots")
 	sprite_original_y = sprite.position.y
 	shadow_original_scale = shadow.scale
 	start_bounce_animation()
@@ -52,8 +55,9 @@ func update_shadow_scale(sprite_y: float):
 	shadow.scale = shadow_original_scale * scale_factor
 
 func _process(delta):
-	apply_repulsion(delta)
-	update_position(delta)
+	if not is_attracted:
+		apply_repulsion(delta)
+		update_position(delta)
 
 func apply_repulsion(delta):
 	var repulsion_force := Vector2.ZERO
@@ -90,3 +94,37 @@ func _on_Area2D_area_exited(other_area):
 	var carrot = other_area.get_parent()
 	if carrot != self:
 		overlapping_carrots.erase(carrot)
+
+func attract_to_bunny(bunny: Node2D):
+	if is_attracted:
+		return
+	
+	is_attracted = true
+	attracted_to = bunny
+	
+	if tween:
+		tween.stop_all()
+		tween.queue_free()
+	
+	velocity = Vector2.ZERO
+	
+	var start_pos = global_position
+	
+	var bunny_center = bunny.global_position
+	if bunny.has_node("Area2D/CollisionShape2D"):
+		var collision = bunny.get_node("Area2D/CollisionShape2D")
+		bunny_center = collision.global_position
+	
+	var end_pos = bunny_center
+	var distance = start_pos.distance_to(end_pos)
+	
+	tween = Tween.new()
+	add_child(tween)
+	
+	var duration = distance / 300.0
+	tween.interpolate_property(self, "global_position", start_pos, end_pos, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+	
+	yield (tween, "tween_all_completed")
+	
+	queue_free()

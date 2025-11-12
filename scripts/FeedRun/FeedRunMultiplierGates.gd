@@ -27,6 +27,8 @@ func _process(delta):
 	remove_off_screen_gates()
 
 func spawn_gates():
+	var gate_pair := []
+	
 	for x_pos in GATE_X_POSITIONS:
 		var gate = MULTIPLIER_GATE_SCENE.instance()
 		gate.position = Vector2(x_pos, INITIAL_Y_OFFSET)
@@ -35,6 +37,12 @@ func spawn_gates():
 		gate.setAmount(random_amount)
 		add_child(gate)
 		gates.append(gate)
+		gate_pair.append(gate)
+	
+	# Link the gates as pairs
+	if gate_pair.size() == 2:
+		gate_pair[0].setPairedGate(gate_pair[1])
+		gate_pair[1].setPairedGate(gate_pair[0])
 
 func update_gate_positions(delta):
 	for gate in gates:

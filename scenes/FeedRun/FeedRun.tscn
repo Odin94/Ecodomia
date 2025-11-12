@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/FeedRun/FeedRun.gd" type="Script" id=1]
 [ext_resource path="res://assets/tiles/pyxel_map.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scripts/FeedRun/FeedRunBackground.gd" type="Script" id=4]
 [ext_resource path="res://scenes/FeedRun/FeedRunPlayer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/FeedRun/FeedRunMultiplierGates.gd" type="Script" id=6]
+[ext_resource path="res://scripts/FeedRun/BunnyContainer.gd" type="Script" id=7]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
@@ -425,3 +426,7 @@ script = ExtResource( 3 )
 
 [node name="FeedRunPlayer" parent="CarrotContainer" instance=ExtResource( 5 )]
 position = Vector2( 1, -39 )
+
+[node name="BunnyContainer" type="Node2D" parent="."]
+position = Vector2( 510, 0 )
+script = ExtResource( 7 )

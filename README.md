@@ -14,6 +14,7 @@ Collect carrots, put them on the table and sit in the sales chair to sell them t
 * Smoke FX by [BDragon1727](https://bdragon1727.itch.io/free-smoke-fx-pixel)
 * Numbers, some tables, chairs, fence, grass & flowers made by me
 * Font: GoogleFonts Roboto
+* Emoji by [Pipoya](https://pipoya.itch.io/free-popup-emotes-pack)
 
 <!-- TODOs: 
 NEXT:
