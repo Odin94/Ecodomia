@@ -38,3 +38,14 @@ func spawn_carrots():
 		carrot.position = SPAWN_CENTER + offset
 		add_child(carrot)
 		carrots.append(carrot)
+
+func spawn_carrots_amount(count: int):
+	for _i in range(count):
+		var carrot = CARROT_SCENE.instance()
+		var offset = Vector2(
+			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE),
+			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE)
+		)
+		carrot.position = SPAWN_CENTER + offset
+		add_child(carrot)
+		carrots.append(carrot)
