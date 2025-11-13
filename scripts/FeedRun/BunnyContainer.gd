@@ -8,17 +8,21 @@ const SPAWN_OFFSET_RANGE = 50.0
 const SCROLL_SPEED = 100.0
 
 var bunnies := []
-var spawn_timer := SPAWN_INTERVAL
+var spawn_timer := 0.0
+var total_time := 0.0
 
 func _ready():
-	pass
+	spawn_timer = SPAWN_INTERVAL
 
 func _process(delta):
+	total_time += delta
 	spawn_timer += delta
 	
 	if spawn_timer >= SPAWN_INTERVAL:
+		var time_since_last_gate = fmod(total_time, GATE_SPAWN_INTERVAL)
+		if time_since_last_gate > 0.1 and time_since_last_gate < GATE_SPAWN_INTERVAL - 0.1:
+			spawn_bunnies()
 		spawn_timer = 0.0
-		spawn_bunnies()
 	
 	update_bunny_positions(delta)
 	remove_off_screen_bunnies()

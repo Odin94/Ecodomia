@@ -33,7 +33,7 @@ func disable():
 	is_enabled = false
 	if area:
 		area.monitoring = false
-		area.monitorable = false
+		area.set_deferred("monitorable", false)
 
 func enable():
 	if is_enabled:
@@ -42,4 +42,4 @@ func enable():
 	is_enabled = true
 	if area:
 		area.monitoring = true
-		area.monitorable = true
+		area.set_deferred("monitorable", true)

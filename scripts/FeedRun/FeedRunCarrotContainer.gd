@@ -2,12 +2,16 @@ extends Node2D
 
 const CARROT_SCENE = preload("res://scenes/FeedRun/Carrot.tscn")
 const SPAWN_CENTER = Vector2(0, 0)
-const SPAWN_OFFSET_RANGE = 50.0
+const SPAWN_OFFSET_RANGE_X = 150.0
+const SPAWN_OFFSET_RANGE_Y = 50.0
 const MOVE_SPEED = 200.0
+const COLLISION_DISABLE_THRESHOLD = 300
+const COLLISION_ENABLE_THRESHOLD = 200
 onready var X_LIMIT_RIGHT = position.x + 115.0
 onready var X_LIMIT_LEFT = position.x - 115.0
 
 var carrots := []
+var collisions_enabled := true
 
 func _ready():
 	spawn_carrots()
@@ -28,13 +32,17 @@ func handle_movement(delta):
 		new_x = clamp(new_x, X_LIMIT_LEFT, X_LIMIT_RIGHT)
 		position.x = new_x
 
+func get_random_ellipse_offset() -> Vector2:
+	var angle = randf() * 2.0 * PI
+	var radius = sqrt(randf())
+	var x = radius * cos(angle) * SPAWN_OFFSET_RANGE_X
+	var y = radius * sin(angle) * SPAWN_OFFSET_RANGE_Y
+	return Vector2(x, y)
+
 func spawn_carrots():
 	for _i in range(10):
 		var carrot = CARROT_SCENE.instance()
-		var offset = Vector2(
-			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE),
-			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE)
-		)
+		var offset = get_random_ellipse_offset()
 		carrot.position = SPAWN_CENTER + offset
 		add_child(carrot)
 		carrots.append(carrot)
@@ -42,10 +50,7 @@ func spawn_carrots():
 func spawn_carrots_amount(count: int):
 	for _i in range(count):
 		var carrot = CARROT_SCENE.instance()
-		var offset = Vector2(
-			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE),
-			rand_range(-SPAWN_OFFSET_RANGE, SPAWN_OFFSET_RANGE)
-		)
+		var offset = get_random_ellipse_offset()
 		carrot.position = SPAWN_CENTER + offset
 		add_child(carrot)
 		carrots.append(carrot)

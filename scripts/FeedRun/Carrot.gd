@@ -7,6 +7,7 @@ const PAUSE_DURATION = 0.2
 const REPULSION_FORCE = 80.0
 const DAMPING = 0.85
 const MAX_VELOCITY = 120.0
+const COLLISION_DISABLE_THRESHOLD = 300
 
 var sprite_original_y: float
 var shadow_original_scale: Vector2
@@ -19,6 +20,7 @@ var attracted_to: Node2D = null
 onready var area := $Area2D
 onready var sprite := $Sprite
 onready var shadow := $Shadow
+onready var carrot_container := get_parent()
 
 func _ready():
 	add_to_group("carrots")
@@ -60,6 +62,11 @@ func _process(delta):
 		update_position(delta)
 
 func apply_repulsion(delta):
+	if not area or not area.monitoring:
+		return
+	if carrot_container.carrots.size() > COLLISION_DISABLE_THRESHOLD:
+		return
+	
 	var repulsion_force := Vector2.ZERO
 	
 	for carrot in overlapping_carrots:

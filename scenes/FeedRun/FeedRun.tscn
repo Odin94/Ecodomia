@@ -426,6 +426,7 @@ script = ExtResource( 3 )
 
 [node name="FeedRunPlayer" parent="CarrotContainer" instance=ExtResource( 5 )]
 position = Vector2( 1, -39 )
+z_index = 3
 
 [node name="BunnyContainer" type="Node2D" parent="."]
 position = Vector2( 510, 0 )
