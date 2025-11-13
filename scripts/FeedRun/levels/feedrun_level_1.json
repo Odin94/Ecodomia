@@ -1,0 +1,150 @@
+{
+    "starting_carrots": 10,
+    "data": [
+        {
+            "gates": [
+                {
+                    "type": "ADD",
+                    "amount": 30
+                },
+                {
+                    "type": "ADD",
+                    "amount": 25
+                }
+            ],
+            "wait_millis": 1000
+        },
+        {
+            "gates": [
+                {
+                    "type": "ADD",
+                    "amount": 15
+                },
+                {
+                    "type": "ADD",
+                    "amount": 20
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 15
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "MULT",
+                    "amount": 2
+                },
+                {
+                    "type": "ADD",
+                    "amount": 15
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 20
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "MULT",
+                    "amount": 3
+                },
+                {
+                    "type": "ADD",
+                    "amount": 25
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 30
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "MULT",
+                    "amount": 2
+                },
+                {
+                    "type": "ADD",
+                    "amount": 30
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 25
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "ADD",
+                    "amount": 20
+                },
+                {
+                    "type": "ADD",
+                    "amount": 25
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 40
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "MULT",
+                    "amount": 2
+                },
+                {
+                    "type": "MULT",
+                    "amount": 3
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 50
+            },
+            "wait_millis": 3000
+        },
+        {
+            "gates": [
+                {
+                    "type": "ADD",
+                    "amount": 40
+                },
+                {
+                    "type": "ADD",
+                    "amount": 35
+                }
+            ],
+            "wait_millis": 2000
+        },
+        {
+            "bunnies": {
+                "amount": 60
+            }
+        }
+    ]
+}

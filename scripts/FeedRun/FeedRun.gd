@@ -1,7 +1,5 @@
 extends Node2D
 
-const SCROLL_SPEED = 100.0
-
 # TODOdin: 
 # * Carrot spawn animation
 # * golden mega-carrots & mega-bunnies
@@ -10,3 +8,127 @@ const SCROLL_SPEED = 100.0
 # * Entering/exiting FeedRun and rewards
 # * Carrot-eating obstacles to avoid
 # * Better rewards if more carrots left over at the end
+
+
+export var level_name: String = "feedrun_level_1"
+
+const SCROLL_SPEED = 100.0
+const DEFAULT_WAIT_MILLIS = 5000.0
+
+const MULTIPLIER_GATE_SCENE = preload("res://scenes/FeedRun/MultiplierGate.tscn")
+const BUNNY_SCENE = preload("res://scenes/FeedRun/Bunny.tscn")
+const GATE_X_POSITIONS = [425.0, 600.0]
+const GATE_SCALE = Vector2(2.6, 2.0)
+const INITIAL_Y_OFFSET = -32.0
+const BUNNY_SPAWN_CENTER = Vector2(0, -64)
+const BUNNY_SPAWN_OFFSET_RANGE_X = 168.0
+const BUNNY_SPAWN_OFFSET_RANGE_Y = 50.0
+
+var level_data: Dictionary = {}
+var current_entry_index := 0
+var wait_timer := 0.0
+var current_wait_time := 0.0
+var is_processing_level := false
+
+onready var multiplier_gates_node := $Background/MultiplierGates
+onready var bunny_container_node := $BunnyContainer
+
+func _ready():
+	load_level_data()
+	if not level_data.empty():
+		is_processing_level = true
+		process_current_entry()
+		current_wait_time = get_wait_time_for_entry(current_entry_index)
+		current_entry_index += 1
+
+func _process(delta):
+	if not is_processing_level:
+		return
+	
+	wait_timer += delta * 1000.0
+	
+	if wait_timer >= current_wait_time:
+		wait_timer = wait_timer - current_wait_time
+		
+		if current_entry_index >= level_data.get("data", []).size():
+			is_processing_level = false
+			return
+		
+		process_current_entry()
+		current_wait_time = get_wait_time_for_entry(current_entry_index)
+		current_entry_index += 1
+
+func load_level_data():
+	var file_path = "res://scripts/FeedRun/levels/" + level_name + ".json"
+	var file = File.new()
+	
+	if not file.file_exists(file_path):
+		push_error("Level file not found: " + file_path)
+		return
+	
+	file.open(file_path, File.READ)
+	var json_text = file.get_as_text()
+	file.close()
+	
+	var json_parse_result = JSON.parse(json_text)
+	
+	if json_parse_result.error != OK:
+		push_error("Failed to parse JSON: " + str(json_parse_result.error_string))
+		return
+	
+	level_data = json_parse_result.result
+
+func get_wait_time_for_entry(entry_index: int) -> float:
+	if entry_index < 0 or entry_index >= level_data.get("data", []).size():
+		return DEFAULT_WAIT_MILLIS
+	
+	var entry = level_data.get("data", [])[entry_index]
+	if entry.has("wait_millis"):
+		return entry["wait_millis"]
+	return DEFAULT_WAIT_MILLIS
+
+func process_current_entry():
+	if current_entry_index >= level_data.get("data", []).size():
+		return
+	
+	var entry = level_data.get("data", [])[current_entry_index]
+	
+	if entry.has("gates"):
+		spawn_gates_from_data(entry["gates"])
+	
+	if entry.has("bunnies"):
+		spawn_bunnies_from_data(entry["bunnies"])
+
+func spawn_gates_from_data(gates_data: Array):
+	var gate_pair := []
+	
+	for i in range(min(gates_data.size(), GATE_X_POSITIONS.size())):
+		var gate_data = gates_data[i]
+		var gate = MULTIPLIER_GATE_SCENE.instance()
+		gate.position = Vector2(GATE_X_POSITIONS[i], INITIAL_Y_OFFSET)
+		gate.scale = GATE_SCALE
+		
+		var gate_kind = gate.KIND.ADD if gate_data.get("type", "ADD") == "ADD" else gate.KIND.MULT
+		var gate_amount = gate_data.get("amount", 0)
+		
+		gate.setAmountAndKind(gate_amount, gate_kind)
+		multiplier_gates_node.add_child(gate)
+		multiplier_gates_node.gates.append(gate)
+		gate_pair.append(gate)
+	
+	if gate_pair.size() == 2:
+		gate_pair[0].setPairedGate(gate_pair[1])
+		gate_pair[1].setPairedGate(gate_pair[0])
+
+func spawn_bunnies_from_data(bunnies_data: Dictionary):
+	var count = bunnies_data.get("amount", 0)
+	
+	for _i in range(count):
+		var bunny = BUNNY_SCENE.instance()
+		var offset = Vector2(
+			rand_range(-BUNNY_SPAWN_OFFSET_RANGE_X, BUNNY_SPAWN_OFFSET_RANGE_X),
+			rand_range(-BUNNY_SPAWN_OFFSET_RANGE_Y, BUNNY_SPAWN_OFFSET_RANGE_Y)
+		)
+		bunny.position = BUNNY_SPAWN_CENTER + offset
+		bunny_container_node.add_child(bunny)
+		bunny_container_node.bunnies.append(bunny)
