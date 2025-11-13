@@ -49,3 +49,16 @@ func spawn_carrots_amount(count: int):
 		carrot.position = SPAWN_CENTER + offset
 		add_child(carrot)
 		carrots.append(carrot)
+
+func multiply_carrots(multiplier: int):
+	var current_carrots = get_tree().get_nodes_in_group("carrots")
+	var valid_carrots = []
+	for carrot in current_carrots:
+		if is_instance_valid(carrot) and not carrot.is_attracted:
+			valid_carrots.append(carrot)
+	
+	var current_count = valid_carrots.size()
+	var new_carrots_to_spawn = (current_count * multiplier) - current_count
+	
+	if new_carrots_to_spawn > 0:
+		spawn_carrots_amount(new_carrots_to_spawn)

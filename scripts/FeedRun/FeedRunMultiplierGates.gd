@@ -9,6 +9,8 @@ const INITIAL_Y_OFFSET = -32.0
 
 const MIN_CARROT_ADD_AMOUNT = 5
 const MAX_CARROT_ADD_AMOUNT = 20
+const MIN_CARROT_MULT_AMOUNT = 2
+const MAX_CARROT_MULT_AMOUNT = 5
 
 var gates := []
 var spawn_timer := 0.0
@@ -33,8 +35,13 @@ func spawn_gates():
 		var gate = MULTIPLIER_GATE_SCENE.instance()
 		gate.position = Vector2(x_pos, INITIAL_Y_OFFSET)
 		gate.scale = GATE_SCALE
-		var random_amount = randi() % (MAX_CARROT_ADD_AMOUNT - MIN_CARROT_ADD_AMOUNT + 1) + MIN_CARROT_ADD_AMOUNT
-		gate.setAmount(random_amount)
+		var random_kind = gate.KIND.ADD if randi() % 2 == 0 else gate.KIND.MULT
+		var random_amount
+		if random_kind == gate.KIND.ADD:
+			random_amount = randi() % (MAX_CARROT_ADD_AMOUNT - MIN_CARROT_ADD_AMOUNT + 1) + MIN_CARROT_ADD_AMOUNT
+		else:
+			random_amount = randi() % (MAX_CARROT_MULT_AMOUNT - MIN_CARROT_MULT_AMOUNT + 1) + MIN_CARROT_MULT_AMOUNT
+		gate.setAmountAndKind(random_amount, random_kind)
 		add_child(gate)
 		gates.append(gate)
 		gate_pair.append(gate)

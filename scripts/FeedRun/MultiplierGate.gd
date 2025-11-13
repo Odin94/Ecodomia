@@ -13,12 +13,15 @@ onready var area := $Area2D
 func _ready():
 	add_to_group("multiplier_gates")
 
-func setAmount(new_amount: int):
+
+func setAmountAndKind(new_amount: int, new_kind):
 	amount = new_amount
+	kind = new_kind
 	if amount == 0:
 		$Label.text = ""
 	else:
-		$Label.text = "+ " + str(amount)
+		var prefix = "x " if kind == KIND.MULT else "+ "
+		$Label.text = prefix + str(amount)
 
 func setPairedGate(gate: Node2D):
 	paired_gate = gate

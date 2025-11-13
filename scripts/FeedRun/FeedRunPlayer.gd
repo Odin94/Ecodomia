@@ -34,14 +34,18 @@ func update_animation():
 
 func _on_Area2D_area_entered(area):
 	var gate = area.get_parent()
-	if gate and gate.has_method("setAmount") and not processed_gates.has(gate) and gate.is_enabled:
+	if gate and gate.has_method("setAmountAndKind") and not processed_gates.has(gate) and gate.is_enabled:
 		processed_gates.append(gate)
 		var gate_amount = gate.amount
-		gate.setAmount(0)
+		var gate_kind = gate.kind
+		gate.setAmountAndKind(0, gate_kind)
 		gate.disable()
 		
 		# Disable the paired gate if it exists
 		if gate.paired_gate and is_instance_valid(gate.paired_gate):
 			gate.paired_gate.disable()
 		
-		carrot_container.call_deferred("spawn_carrots_amount", gate_amount)
+		if gate_kind == gate.KIND.MULT:
+			carrot_container.call_deferred("multiply_carrots", gate_amount)
+		else:
+			carrot_container.call_deferred("spawn_carrots_amount", gate_amount)
