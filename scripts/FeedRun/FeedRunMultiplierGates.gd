@@ -1,12 +1,10 @@
 extends Node2D
 
 const MULTIPLIER_GATE_SCENE = preload("res://scenes/FeedRun/MultiplierGate.tscn")
-const SCROLL_SPEED = 100.0
 const SPAWN_INTERVAL = 5.0
 const GATE_X_POSITIONS = [425.0, 600.0]
 const GATE_SCALE = Vector2(2.6, 2.0)
 const INITIAL_Y_OFFSET = -32.0
-
 const MIN_CARROT_ADD_AMOUNT = 5
 const MAX_CARROT_ADD_AMOUNT = 20
 const MIN_CARROT_MULT_AMOUNT = 2
@@ -14,8 +12,10 @@ const MAX_CARROT_MULT_AMOUNT = 5
 
 var gates := []
 var spawn_timer := 0.0
+var scroll_speed: float
 
 func _ready():
+	scroll_speed = get_parent().SCROLL_SPEED
 	spawn_gates()
 
 func _process(delta):
@@ -54,7 +54,7 @@ func spawn_gates():
 func update_gate_positions(delta):
 	for gate in gates:
 		if is_instance_valid(gate):
-			gate.position.y += SCROLL_SPEED * delta
+			gate.position.y += scroll_speed * delta
 
 func remove_off_screen_gates():
 	var viewport_height = get_viewport().get_visible_rect().size.y

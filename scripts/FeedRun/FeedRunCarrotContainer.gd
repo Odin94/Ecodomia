@@ -7,8 +7,8 @@ const SPAWN_OFFSET_RANGE_Y = 50.0
 const MOVE_SPEED = 200.0
 const COLLISION_DISABLE_THRESHOLD = 300
 const COLLISION_ENABLE_THRESHOLD = 200
-onready var X_LIMIT_RIGHT = position.x + 115.0
-onready var X_LIMIT_LEFT = position.x - 115.0
+onready var X_LIMIT_RIGHT = position.x + 155.0
+onready var X_LIMIT_LEFT = position.x - 155.0
 
 var carrots := []
 var collisions_enabled := true

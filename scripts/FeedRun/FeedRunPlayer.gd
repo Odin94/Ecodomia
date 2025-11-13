@@ -5,6 +5,7 @@ onready var animated_sprite := $AnimatedSprite
 var processed_gates := []
 var last_position_x: float = 0.0
 
+# NOTE: Movement is in CarrotContainer!
 func _ready():
 	add_to_group("FeedRunPlayer")
 	last_position_x = carrot_container.position.x

@@ -5,13 +5,14 @@ const GATE_SPAWN_INTERVAL = 5.0
 const SPAWN_INTERVAL = GATE_SPAWN_INTERVAL / 2.0
 const SPAWN_CENTER = Vector2(0, -64)
 const SPAWN_OFFSET_RANGE = 50.0
-const SCROLL_SPEED = 100.0
 
 var bunnies := []
 var spawn_timer := 0.0
 var total_time := 0.0
+var scroll_speed: float
 
 func _ready():
+	scroll_speed = get_parent().SCROLL_SPEED
 	spawn_timer = SPAWN_INTERVAL
 
 func _process(delta):
@@ -43,7 +44,7 @@ func spawn_bunnies():
 func update_bunny_positions(delta):
 	for bunny in bunnies:
 		if is_instance_valid(bunny):
-			bunny.position.y += SCROLL_SPEED * delta
+			bunny.position.y += scroll_speed * delta
 
 func remove_off_screen_bunnies():
 	var viewport_height = get_viewport().get_visible_rect().size.y
