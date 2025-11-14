@@ -32,7 +32,7 @@ var current_wait_time := 0.0
 var is_processing_level := false
 var chest: Node2D = null
 var is_scrolling_chest := false
-const CHEST_PLAYER_CLOSE_DISTANCE = 150.0
+const CHEST_PLAYER_CLOSE_DISTANCE = 250.0
 
 onready var multiplier_gates_node := $Background/MultiplierGates
 onready var bunny_container_node := $BunnyContainer
@@ -161,7 +161,7 @@ func scroll_chest_coroutine():
 			is_scrolling_chest = false
 			if background_node.has_method("set_should_scroll"):
 				background_node.set_should_scroll(false)
-			yield (get_tree().create_timer(1.5), "timeout")
+			yield (get_tree().create_timer(1.0), "timeout")
 			chest.activate()
 		else:
 			var delta = get_process_delta_time()
@@ -170,7 +170,9 @@ func scroll_chest_coroutine():
 			yield (get_tree(), "idle_frame")
 
 func on_chest_opened():
-	if is_instance_valid(chest):
-		chest.queue_free()
-	chest = null
-	is_scrolling_chest = false
+	pass
+	# TODOdin: Wait a bit, fade out screen, then run code below
+	# if is_instance_valid(chest):
+	# 	chest.queue_free()
+	# chest = null
+	# is_scrolling_chest = false
