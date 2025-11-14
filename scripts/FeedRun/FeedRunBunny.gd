@@ -1,6 +1,6 @@
 extends Node2D
 
-const ATTRACTION_DISTANCE = 180.0
+const ATTRACTION_DISTANCE = 220.0
 const WALK_OFF_SPEED = 150.0
 const PLAYER_CLOSE_DISTANCE = 50.0
 
@@ -19,6 +19,8 @@ func _process(_delta):
 	check_off_screen()
 	
 	if state == State.WALKING:
+		if connected_carrot != null and not is_instance_valid(connected_carrot):
+			connected_carrot = null
 		check_for_carrots()
 		check_player_proximity()
 	elif state == State.SAD_NO_CARROT:
@@ -42,6 +44,9 @@ func check_for_carrots():
 	if state == State.SAD_NO_CARROT:
 		return
 	
+	if connected_carrot != null:
+		return
+	
 	var carrots = get_tree().get_nodes_in_group("carrots")
 	
 	if carrots.empty():
@@ -51,7 +56,7 @@ func check_for_carrots():
 		if not is_instance_valid(carrot):
 			continue
 		
-		if carrot.is_attracted:
+		if carrot.attraction_target != null:
 			continue
 		
 		var y_distance = abs(global_position.y - carrot.global_position.y)
@@ -67,7 +72,7 @@ func check_player_proximity():
 	var carrots = get_tree().get_nodes_in_group("carrots")
 	var valid_carrots = []
 	for carrot in carrots:
-		if is_instance_valid(carrot) and not carrot.is_attracted:
+		if is_instance_valid(carrot) and carrot.attraction_target == null:
 			valid_carrots.append(carrot)
 	
 	if not valid_carrots.empty():
@@ -92,16 +97,14 @@ func connect_to_carrot(carrot: Node2D):
 	if state != State.WALKING:
 		return
 	
-	state = State.CONNECTED
 	connected_carrot = carrot
-	
-	animated_sprite.animation = "stand down"
-	
 	carrot.attract_to(self)
-	show_happy_emoji()
 
 func on_carrot_reached():
-	if state == State.CONNECTED:
+	if state == State.WALKING and connected_carrot != null:
+		state = State.CONNECTED
+		animated_sprite.animation = "stand down"
+		show_happy_emoji()
 		start_walking_off()
 
 func show_happy_emoji():
@@ -117,6 +120,7 @@ func start_walking_off():
 		return
 	
 	state = State.WALKING_OFF
+	connected_carrot = null
 	
 	walk_off_direction = 1.0 if randf() > 0.5 else -1.0
 	

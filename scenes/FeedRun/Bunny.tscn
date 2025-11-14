@@ -160,7 +160,6 @@ script = ExtResource( 2 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 25 )
 animation = "walk down"
-frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="."]

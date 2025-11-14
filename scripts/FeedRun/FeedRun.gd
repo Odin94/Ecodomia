@@ -170,9 +170,31 @@ func scroll_chest_coroutine():
 			yield (get_tree(), "idle_frame")
 
 func on_chest_opened():
-	pass
-	# TODOdin: Wait a bit, fade out screen, then run code below
-	# if is_instance_valid(chest):
-	# 	chest.queue_free()
-	# chest = null
-	# is_scrolling_chest = false
+	yield (get_tree().create_timer(2.0), "timeout")
+	
+	var viewport_size = get_viewport().get_visible_rect().size
+	
+	var fade_overlay = ColorRect.new()
+	fade_overlay.color = Color(0, 0, 0, 0)
+	fade_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fade_overlay.rect_size = viewport_size
+	
+	var canvas_layer = CanvasLayer.new()
+	canvas_layer.add_child(fade_overlay)
+	add_child(canvas_layer)
+	
+	var fade_duration = 1.0
+	var fade_time = 0.0
+	
+	while fade_time < fade_duration:
+		fade_time += get_process_delta_time()
+		var alpha = fade_time / fade_duration
+		fade_overlay.color.a = alpha
+		yield (get_tree(), "idle_frame")
+	
+	fade_overlay.color.a = 1.0
+	
+	if is_instance_valid(chest):
+		chest.queue_free()
+	chest = null
+	is_scrolling_chest = false

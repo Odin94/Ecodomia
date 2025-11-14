@@ -14,9 +14,8 @@ var shadow_original_scale: Vector2
 var tween: Tween
 var velocity := Vector2.ZERO
 var overlapping_carrots := []
-var is_attracted := false
-var attracted_to: Node2D = null
 var attraction_target: Node2D = null
+const ATTRACTION_SPEED = 300.0
 
 onready var area := $Area2D
 onready var sprite := $Sprite
@@ -38,19 +37,27 @@ func start_bounce_animation():
 	bounce_up()
 
 func bounce_up():
+	if attraction_target != null or not is_instance_valid(tween):
+		return
 	tween.interpolate_property(sprite, "position:y", sprite_original_y, sprite_original_y - BOUNCE_HEIGHT, BOUNCE_DURATION, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.interpolate_method(self, "update_shadow_scale", sprite_original_y, sprite_original_y - BOUNCE_HEIGHT, BOUNCE_DURATION, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
 	yield (tween, "tween_all_completed")
-	bounce_down()
+	if attraction_target == null:
+		bounce_down()
 
 func bounce_down():
+	if attraction_target != null or not is_instance_valid(tween):
+		return
 	tween.interpolate_property(sprite, "position:y", sprite_original_y - BOUNCE_HEIGHT, sprite_original_y, BOUNCE_DURATION, Tween.TRANS_QUAD, Tween.EASE_IN)
 	tween.interpolate_method(self, "update_shadow_scale", sprite_original_y - BOUNCE_HEIGHT, sprite_original_y, BOUNCE_DURATION, Tween.TRANS_QUAD, Tween.EASE_IN)
 	tween.start()
 	yield (tween, "tween_all_completed")
+	if attraction_target != null:
+		return
 	yield (get_tree().create_timer(PAUSE_DURATION), "timeout")
-	bounce_up()
+	if attraction_target == null:
+		bounce_up()
 
 func update_shadow_scale(sprite_y: float):
 	var bounce_progress = (sprite_original_y - sprite_y) / BOUNCE_HEIGHT
@@ -58,9 +65,11 @@ func update_shadow_scale(sprite_y: float):
 	shadow.scale = shadow_original_scale * scale_factor
 
 func _process(delta):
-	if not is_attracted:
+	if attraction_target == null:
 		apply_repulsion(delta)
 		update_position(delta)
+	else:
+		move_towards_target(delta)
 
 func apply_repulsion(delta):
 	if not area or not area.monitoring:
@@ -104,39 +113,55 @@ func _on_Area2D_area_exited(other_area):
 		overlapping_carrots.erase(carrot)
 
 func attract_to(target: Node2D):
-	if is_attracted:
+	if attraction_target != null:
 		return
 	
-	is_attracted = true
-	attracted_to = target
 	attraction_target = target
 	
 	if tween:
 		tween.stop_all()
 		tween.queue_free()
+		tween = null
 	
 	velocity = Vector2.ZERO
-	
-	var start_pos = global_position
+
+func get_target_center(target: Node2D) -> Vector2:
+	if not is_instance_valid(target):
+		return global_position
 	
 	var target_center = target.global_position
-	if target.has_node("Area2D/CollisionShape2D"):
-		var collision = target.get_node("Area2D/CollisionShape2D")
-		target_center = collision.global_position
 	
-	var end_pos = target_center
-	var distance = start_pos.distance_to(end_pos)
+	if target.has_method("get_node_name") and target.get_node_name() == "FeedRunChest":
+		return target_center
 	
-	tween = Tween.new()
-	add_child(tween)
+	if target.has_node("AnimatedSprite"):
+		var target_sprite = target.get_node("AnimatedSprite")
+		if target_sprite.frames:
+			var current_anim = target_sprite.animation if target_sprite.animation else "default"
+			if target_sprite.frames.has_animation(current_anim):
+				var frame = target_sprite.frames.get_frame(current_anim, target_sprite.frame)
+				var sprite_height = frame.get_height() * target.scale.y
+				target_center.y += sprite_height / 2.0
 	
-	var duration = distance / 300.0
-	tween.interpolate_property(self, "global_position", start_pos, end_pos, duration, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween.start()
+	return target_center
+
+func move_towards_target(delta):
+	if not is_instance_valid(attraction_target):
+		attraction_target = null
+		return
 	
-	yield (tween, "tween_all_completed")
+	var target_center = get_target_center(attraction_target)
+	var direction = global_position.direction_to(target_center)
+	var distance = global_position.distance_to(target_center)
 	
-	if is_instance_valid(attraction_target) and attraction_target.has_method("on_carrot_reached"):
-		attraction_target.on_carrot_reached()
+	if distance < 5.0:
+		if attraction_target.has_method("on_carrot_reached"):
+			attraction_target.on_carrot_reached()
+		queue_free()
+		return
 	
-	queue_free()
+	var move_distance = ATTRACTION_SPEED * delta
+	if move_distance > distance:
+		move_distance = distance
+	
+	global_position += direction * move_distance

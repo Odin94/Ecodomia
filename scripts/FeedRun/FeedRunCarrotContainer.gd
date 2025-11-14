@@ -59,7 +59,7 @@ func multiply_carrots(multiplier: int):
 	var current_carrots = get_tree().get_nodes_in_group("carrots")
 	var valid_carrots = []
 	for carrot in current_carrots:
-		if is_instance_valid(carrot) and not carrot.is_attracted:
+		if is_instance_valid(carrot) and carrot.attraction_target == null:
 			valid_carrots.append(carrot)
 	
 	var current_count = valid_carrots.size()

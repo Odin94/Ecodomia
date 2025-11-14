@@ -1,5 +1,6 @@
 extends Node2D
 
+
 const ATTRACTION_DISTANCE = 500.0
 const ATTRACTION_DELAY = 0.01
 const GROWTH_PER_CARROT = 0.01
@@ -20,6 +21,10 @@ var original_scale: Vector2
 var backup_timer: Timer = null
 
 onready var animated_sprite := $AnimatedSprite
+
+func get_node_name():
+	return "FeedRunChest"
+
 
 func _ready():
 	original_scale = scale
@@ -56,7 +61,7 @@ func find_and_attract_carrots():
 		if not is_instance_valid(carrot):
 			continue
 		
-		if carrot.is_attracted:
+		if carrot.attraction_target != null:
 			continue
 		
 		var distance = global_position.distance_to(carrot.global_position)
@@ -77,7 +82,7 @@ func attract_carrot_with_delay(carrot: Node2D, delay: float):
 	if delay > 0:
 		yield (get_tree().create_timer(delay), "timeout")
 	
-	if not is_instance_valid(carrot) or carrot.is_attracted:
+	if not is_instance_valid(carrot) or carrot.attraction_target != null:
 		return
 	
 	carrot.attract_to(self)
@@ -202,7 +207,9 @@ func on_all_carrots_collected():
 	animated_sprite.frame = last_frame
 	animated_sprite.playing = false
 
-	spawn_bucks()
+	var spawn_state = spawn_bucks()
+	if spawn_state is GDScriptFunctionState:
+		yield (spawn_state, "completed")
 	
 	if is_instance_valid(get_parent()):
 		get_parent().call_deferred("on_chest_opened")
