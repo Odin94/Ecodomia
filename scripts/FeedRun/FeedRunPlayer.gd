@@ -49,4 +49,4 @@ func _on_Area2D_area_entered(area):
 		if gate_kind == gate.KIND.MULT:
 			carrot_container.call_deferred("multiply_carrots", gate_amount)
 		else:
-			carrot_container.call_deferred("spawn_carrots_amount", gate_amount)
+			carrot_container.call_deferred("spawn_carrots", gate_amount)

@@ -3,6 +3,7 @@ extends Node2D
 const BOUNCE_HEIGHT = 8.0
 const BOUNCE_DURATION = 0.4
 const PAUSE_DURATION = 0.2
+const FADE_IN_DURATION = 0.3
 
 const REPULSION_FORCE = 80.0
 const DAMPING = 0.85
@@ -26,6 +27,20 @@ func _ready():
 	add_to_group("carrots")
 	sprite_original_y = sprite.position.y
 	shadow_original_scale = shadow.scale
+	sprite.modulate.a = 0.0
+	shadow.modulate.a = 0.0
+	fade_in()
+
+func fade_in():
+	if tween:
+		tween.queue_free()
+	
+	tween = Tween.new()
+	add_child(tween)
+	tween.interpolate_property(sprite, "modulate:a", 0.0, 1.0, FADE_IN_DURATION, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property(shadow, "modulate:a", 0.0, 1.0, FADE_IN_DURATION, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.start()
+	yield (tween, "tween_all_completed")
 	start_bounce_animation()
 
 func start_bounce_animation():

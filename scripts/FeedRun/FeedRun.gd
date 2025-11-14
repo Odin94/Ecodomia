@@ -10,7 +10,12 @@ extends Node2D
 # * Better rewards if more carrots left over at the end
 
 
-export var level_name: String = "feedrun_level_1"
+# Challenging level design options:
+# * Bunnies so close to gate that they start eating carrots before you reach the gate -> +gate is better than x-gate unexpectedly
+# * +-gates that add more than you'd get from mult-gates
+# * Multiple gates in close succession where you can't switch sides fast enough and an unexpected side is better
+
+export var level_name: String = "feedrun_level_2"
 
 const SCROLL_SPEED = 100.0
 const DEFAULT_WAIT_MILLIS = 5000.0

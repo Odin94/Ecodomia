@@ -116,8 +116,8 @@
                     "amount": 2
                 },
                 {
-                    "type": "MULT",
-                    "amount": 3
+                    "type": "ADD",
+                    "amount": 100
                 }
             ],
             "wait_millis": 2000

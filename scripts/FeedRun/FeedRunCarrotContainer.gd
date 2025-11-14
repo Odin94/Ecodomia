@@ -14,7 +14,7 @@ var carrots := []
 var collisions_enabled := true
 
 func _ready():
-	spawn_carrots()
+	spawn_carrots(10)
 
 func _process(delta):
 	handle_movement(delta)
@@ -39,15 +39,7 @@ func get_random_ellipse_offset() -> Vector2:
 	var y = radius * sin(angle) * SPAWN_OFFSET_RANGE_Y
 	return Vector2(x, y)
 
-func spawn_carrots():
-	for _i in range(10):
-		var carrot = CARROT_SCENE.instance()
-		var offset = get_random_ellipse_offset()
-		carrot.position = SPAWN_CENTER + offset
-		add_child(carrot)
-		carrots.append(carrot)
-
-func spawn_carrots_amount(count: int):
+func spawn_carrots(count: int):
 	for _i in range(count):
 		var carrot = CARROT_SCENE.instance()
 		var offset = get_random_ellipse_offset()
@@ -66,4 +58,4 @@ func multiply_carrots(multiplier: int):
 	var new_carrots_to_spawn = (current_count * multiplier) - current_count
 	
 	if new_carrots_to_spawn > 0:
-		spawn_carrots_amount(new_carrots_to_spawn)
+		spawn_carrots(new_carrots_to_spawn)
