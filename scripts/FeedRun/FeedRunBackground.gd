@@ -23,6 +23,7 @@ var grass_right_dirt_texture: AtlasTexture
 var tiles := []
 var scroll_offset: float = 0.0
 var initial_y_offset: float = 0.0
+var should_scroll := true
 
 func _ready():
 	load_spritesheet()
@@ -106,6 +107,9 @@ func create_initial_grid():
 		tiles.append(row_tiles)
 
 func _process(delta):
+	if not should_scroll:
+		return
+	
 	scroll_offset += SCROLL_SPEED * delta
 	
 	# TODOdin: Review this remove logic
@@ -142,6 +146,9 @@ func add_top_tiles(count):
 			tile_container.add_child(tile)
 			row_tiles.append(tile)
 		tiles.push_front(row_tiles)
+
+func set_should_scroll(value: bool):
+	should_scroll = value
 
 func update_tile_positions():
 	for row_idx in range(tiles.size()):

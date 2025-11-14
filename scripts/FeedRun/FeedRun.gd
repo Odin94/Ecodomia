@@ -17,10 +17,11 @@ const DEFAULT_WAIT_MILLIS = 5000.0
 
 const MULTIPLIER_GATE_SCENE = preload("res://scenes/FeedRun/MultiplierGate.tscn")
 const BUNNY_SCENE = preload("res://scenes/FeedRun/Bunny.tscn")
+const CHEST_SCENE = preload("res://scenes/FeedRun/FeedRunChest.tscn")
 const GATE_X_POSITIONS = [425.0, 600.0]
 const GATE_SCALE = Vector2(2.6, 2.0)
 const INITIAL_Y_OFFSET = -32.0
-const BUNNY_SPAWN_CENTER = Vector2(0, -64)
+const SPAWN_CENTER = Vector2(0, -64)
 const BUNNY_SPAWN_OFFSET_RANGE_X = 168.0
 const BUNNY_SPAWN_OFFSET_RANGE_Y = 50.0
 
@@ -29,9 +30,13 @@ var current_entry_index := 0
 var wait_timer := 0.0
 var current_wait_time := 0.0
 var is_processing_level := false
+var chest: Node2D = null
+var is_scrolling_chest := false
+const CHEST_PLAYER_CLOSE_DISTANCE = 150.0
 
 onready var multiplier_gates_node := $Background/MultiplierGates
 onready var bunny_container_node := $BunnyContainer
+onready var background_node := $Background
 
 func _ready():
 	load_level_data()
@@ -52,6 +57,7 @@ func _process(delta):
 		
 		if current_entry_index >= level_data.get("data", []).size():
 			is_processing_level = false
+			end_run_spawn_chest()
 			return
 		
 		process_current_entry()
@@ -129,6 +135,42 @@ func spawn_bunnies_from_data(bunnies_data: Dictionary):
 			rand_range(-BUNNY_SPAWN_OFFSET_RANGE_X, BUNNY_SPAWN_OFFSET_RANGE_X),
 			rand_range(-BUNNY_SPAWN_OFFSET_RANGE_Y, BUNNY_SPAWN_OFFSET_RANGE_Y)
 		)
-		bunny.position = BUNNY_SPAWN_CENTER + offset
+		bunny.position = SPAWN_CENTER + offset
 		bunny_container_node.add_child(bunny)
 		bunny_container_node.bunnies.append(bunny)
+
+
+func end_run_spawn_chest():
+	chest = CHEST_SCENE.instance()
+	chest.position = Vector2(bunny_container_node.position.x, SPAWN_CENTER.y)
+	add_child(chest)
+	is_scrolling_chest = true
+	scroll_chest_coroutine()
+
+func scroll_chest_coroutine():
+	while is_scrolling_chest and is_instance_valid(chest):
+		var player_nodes = get_tree().get_nodes_in_group("FeedRunPlayer")
+		var player = player_nodes[0]
+
+		var player_pos = player.global_position
+		var chest_pos = chest.global_position
+		
+		var distance = abs(chest_pos.y - player_pos.y)
+		
+		if distance <= CHEST_PLAYER_CLOSE_DISTANCE:
+			is_scrolling_chest = false
+			if background_node.has_method("set_should_scroll"):
+				background_node.set_should_scroll(false)
+			yield (get_tree().create_timer(1.5), "timeout")
+			chest.activate()
+		else:
+			var delta = get_process_delta_time()
+			chest.position.y += SCROLL_SPEED * delta
+			
+			yield (get_tree(), "idle_frame")
+
+func on_chest_opened():
+	if is_instance_valid(chest):
+		chest.queue_free()
+	chest = null
+	is_scrolling_chest = false

@@ -24,12 +24,10 @@ func _process(_delta):
 	elif state == State.SAD_NO_CARROT:
 		pass
 	elif state == State.CONNECTED:
+		# Carrot will call back on connection 
 		if not is_instance_valid(connected_carrot):
 			start_walking_off()
-		else:
-			var distance = global_position.distance_to(connected_carrot.global_position)
-			if distance < 15.0:
-				start_walking_off()
+
 	elif state == State.WALKING_OFF:
 		position.x += walk_off_direction * WALK_OFF_SPEED * _delta
 
@@ -99,8 +97,12 @@ func connect_to_carrot(carrot: Node2D):
 	
 	animated_sprite.animation = "stand down"
 	
-	carrot.attract_to_bunny(self)
+	carrot.attract_to(self)
 	show_happy_emoji()
+
+func on_carrot_reached():
+	if state == State.CONNECTED:
+		start_walking_off()
 
 func show_happy_emoji():
 	happy_emoji.visible = true

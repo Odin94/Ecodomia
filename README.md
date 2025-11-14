@@ -15,6 +15,7 @@ Collect carrots, put them on the table and sit in the sales chair to sell them t
 * Numbers, some tables, chairs, fence, grass & flowers made by me
 * Font: GoogleFonts Roboto
 * Emoji by [Pipoya](https://pipoya.itch.io/free-popup-emotes-pack)
+* Treasure Chests by [Admurin](https://admurin.itch.io/free-chest-animations)
 
 <!-- TODOs: 
 NEXT:

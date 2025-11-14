@@ -16,6 +16,7 @@ var velocity := Vector2.ZERO
 var overlapping_carrots := []
 var is_attracted := false
 var attracted_to: Node2D = null
+var attraction_target: Node2D = null
 
 onready var area := $Area2D
 onready var sprite := $Sprite
@@ -102,12 +103,13 @@ func _on_Area2D_area_exited(other_area):
 	if carrot != self:
 		overlapping_carrots.erase(carrot)
 
-func attract_to_bunny(bunny: Node2D):
+func attract_to(target: Node2D):
 	if is_attracted:
 		return
 	
 	is_attracted = true
-	attracted_to = bunny
+	attracted_to = target
+	attraction_target = target
 	
 	if tween:
 		tween.stop_all()
@@ -117,12 +119,12 @@ func attract_to_bunny(bunny: Node2D):
 	
 	var start_pos = global_position
 	
-	var bunny_center = bunny.global_position
-	if bunny.has_node("Area2D/CollisionShape2D"):
-		var collision = bunny.get_node("Area2D/CollisionShape2D")
-		bunny_center = collision.global_position
+	var target_center = target.global_position
+	if target.has_node("Area2D/CollisionShape2D"):
+		var collision = target.get_node("Area2D/CollisionShape2D")
+		target_center = collision.global_position
 	
-	var end_pos = bunny_center
+	var end_pos = target_center
 	var distance = start_pos.distance_to(end_pos)
 	
 	tween = Tween.new()
@@ -133,5 +135,8 @@ func attract_to_bunny(bunny: Node2D):
 	tween.start()
 	
 	yield (tween, "tween_all_completed")
+	
+	if is_instance_valid(attraction_target) and attraction_target.has_method("on_carrot_reached"):
+		attraction_target.on_carrot_reached()
 	
 	queue_free()
