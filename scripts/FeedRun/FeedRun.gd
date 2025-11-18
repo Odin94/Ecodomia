@@ -203,3 +203,5 @@ func on_chest_opened():
 		chest.queue_free()
 	chest = null
 	is_scrolling_chest = false
+	
+	StageMover.enter_mainmap()

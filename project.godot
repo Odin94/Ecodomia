@@ -27,6 +27,11 @@ config/icon="res://icon.png"
 [autoload]
 
 HomeBase="*res://scripts/global/home_base.gd"
+StageMover="*res://scripts/global/stage_mover.gd"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
 
 [display]
 

@@ -20,6 +20,9 @@ func _ready():
 	rng.randomize()
 
 func process_dropping_off(delta):
+	if not is_instance_valid(drop_off_area):
+		queue_free()
+		return
 	var target = drop_off_area.get_put_down_location(self)
 	move_to_target(target, delta)
 	if global_position.distance_to(target) < 2:
@@ -27,20 +30,29 @@ func process_dropping_off(delta):
 	
 	
 func process_lying_around(delta):
+	if not is_instance_valid(drop_off_area):
+		queue_free()
+		return
 	var target = drop_off_area.get_put_down_location(self)
 	move_to_target(target, delta)
 	if global_position.distance_to(target) < 2:
 		status = STATUS.LYING_AROUND
 		
-	if global_position.distance_to(player.global_position) < pick_up_distance:
+	if is_instance_valid(player) and global_position.distance_to(player.global_position) < pick_up_distance:
 		get_picked_up()
 
 
 func process_following_player(delta):
+	if not is_instance_valid(player):
+		queue_free()
+		return
 	var target = player.get_pickup_location(self)
 	move_to_target(target, delta)
 	
 func process_spending(delta):
+	if not is_instance_valid(spend_area):
+		queue_free()
+		return
 	var target = spend_area.global_position
 	move_to_target(target, delta)
 	if global_position.distance_to(target) < 2:
