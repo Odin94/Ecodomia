@@ -3,7 +3,7 @@ extends Node2D
 var stash := []
 var stash_limit := 100
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# updates continuously to make sure cargos have the right location
 	# since cargos determine when they're put down themselves, they all run in parallel
 	# and race-condition for offset-locations

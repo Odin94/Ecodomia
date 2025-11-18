@@ -10,7 +10,7 @@ onready var dash_eggs = [
 	$CanvasLayer/Control/DashEgg5,
 ]
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	for egg in dash_eggs:
 		egg.visible = false
 	for i in player.dash_skill.current_dashes:

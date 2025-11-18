@@ -23,19 +23,19 @@ func _ready():
 	assert(is_instance_valid(money_drop_off_area), "Invalid money_drop_off_area in bunny, set in spawner!")
 	assert(is_instance_valid(bunny_spawner), "Invalid bunny_spawner in bunny, set in spawner!")
 
-func process_in_queue(delta):
+func process_in_queue(_delta):
 	var closer_bunnies = get_closer_bunnies()
 	queue_position = closer_bunnies.size()
 	
 	# assumes that all queues go right -> left
 	var position_to_approach = target_area.global_position + Vector2(queue_standing_distance * queue_position, 0)
-	move_to_target(position_to_approach, delta)
+	move_to_target(position_to_approach)
 	if queue_position == 0 and global_position.distance_to(position_to_approach) < 2:
 		$AnimatedSprite.animation = "stand up"
 
-func process_satisfied(delta):
+func process_satisfied(_delta):
 	var position_to_approach = target_area.global_position - Vector2(400, 0)
-	move_to_target(position_to_approach, delta)
+	move_to_target(position_to_approach)
 	if global_position.distance_to(position_to_approach) < 5:
 		queue_free()
 	
@@ -69,7 +69,7 @@ func get_closer_bunnies():
 			closer_bunnies.append(bunny)
 	return closer_bunnies
 
-func move_to_target(target: Vector2, delta):
+func move_to_target(target: Vector2):
 	if global_position.distance_to(target) < 2:
 		velocity = Vector2.ZERO
 		$AnimatedSprite.animation = "stand left"

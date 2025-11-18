@@ -33,8 +33,8 @@ func snap_to_grid(pos: Vector2):
 	)
 
 
-func adjust_for_movement_keys(target: Vector2) -> Vector2:
-	var result = Vector2(target.x, target.y)
+func adjust_for_movement_keys(local_target: Vector2) -> Vector2:
+	var result = Vector2(local_target.x, local_target.y)
 	if Input.is_action_pressed("up"):
 		result.y -= grid_size
 	if Input.is_action_pressed("down"):
@@ -45,15 +45,15 @@ func adjust_for_movement_keys(target: Vector2) -> Vector2:
 		result.x += grid_size
 	return result
 
-func move_to_target(target: Vector2, delta):
+func move_to_target(local_target: Vector2, delta):
 	var local_speed := speed
-	if global_position.distance_to(target) < 15:
+	if global_position.distance_to(local_target) < 15:
 		local_speed = speed / 2
-	if global_position.distance_to(target) < 5:
+	if global_position.distance_to(local_target) < 5:
 		local_speed = speed / 4
-	if global_position.distance_to(target) < 1:
+	if global_position.distance_to(local_target) < 1:
 		return
-	var direction := global_position.direction_to(target)
+	var direction := global_position.direction_to(local_target)
 	var velocity := direction * local_speed
 	
 	position += velocity * delta

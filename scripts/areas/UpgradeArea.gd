@@ -5,21 +5,21 @@ var carrot_spawner_scene = load("res://scenes/spawners/CarrotSpawner.tscn")
 export var original_cost = 15
 onready var remaining_cost = original_cost
 export(NodePath) var vendor_area_to_upgrade_path
-onready var vendor_area_to_upgrade := get_node(vendor_area_to_upgrade_path) as Node2D
+onready var vendor_area_to_upgrade = get_node(vendor_area_to_upgrade_path) as Node2D if vendor_area_to_upgrade_path != "" else null
 
 export(NodePath) var cargo_collector_to_spawn_path
-onready var cargo_collector_to_spawn := get_node(cargo_collector_to_spawn_path) as Node2D
+onready var cargo_collector_to_spawn = get_node(cargo_collector_to_spawn_path) as Node2D if cargo_collector_to_spawn_path != "" else null
 
 export(Vector2) var carrot_spawner_location = null
 
 export(NodePath) var bunny_spawner_path # path to a whole set of sales nodes, eg. cargo-storage, money-dropoff, purchase-area etc.
-onready var bunny_spawner := get_node(bunny_spawner_path) as Node2D
+onready var bunny_spawner = get_node(bunny_spawner_path) as Node2D if bunny_spawner_path != "" else null
 
 export(NodePath) var gate_path
-onready var gate_to_open := get_node(gate_path) as Node2D
+onready var gate_to_open = get_node(gate_path) as Node2D if gate_path != "" else null
 
 export(NodePath) var purchaseable_path # Anything with a "purchase" function
-onready var purchaseable := get_node(purchaseable_path) as Node2D
+onready var purchaseable = get_node(purchaseable_path) as Node2D if purchaseable_path != "" else null
 
 
 export(Array, NodePath) var prerequisite_upgrades_paths = []
@@ -57,7 +57,8 @@ func _ready():
 		bunny_spawner.pause_bunny_spawning = true
 		
 	for upgrade_path in prerequisite_upgrades_paths:
-		prerequisite_upgrades.append(get_node(upgrade_path) as Node2D)
+		if upgrade_path != "":
+			prerequisite_upgrades.append(get_node(upgrade_path) as Node2D)
 		visible = false
 
 

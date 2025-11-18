@@ -106,7 +106,7 @@ func apply_repulsion(delta):
 			repulsion_force += direction * force_strength
 	
 	velocity += repulsion_force * delta
-	velocity = velocity.clamped(MAX_VELOCITY)
+	velocity = velocity.limit_length(MAX_VELOCITY)
 
 func update_position(delta):
 	position += velocity * delta

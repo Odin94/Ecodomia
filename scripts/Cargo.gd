@@ -20,13 +20,13 @@ var target: Vector2
 
 var bunny: Node2D
 
-func move_to_target(target: Vector2, delta, passed_speed: int = speed):
+func move_to_target(local_target: Vector2, delta, passed_speed: int = speed):
 	var local_speed := passed_speed
-	if global_position.distance_to(target) < 25:
+	if global_position.distance_to(local_target) < 25:
 		local_speed = 50
-	if global_position.distance_to(target) < 2:
+	if global_position.distance_to(local_target) < 2:
 		return
-	var direction := global_position.direction_to(target)
+	var direction := global_position.direction_to(local_target)
 	var desired_velocity := direction * local_speed
 	var change = (desired_velocity - _current_velocity) * drag_factor # change that slowly converges our velocity onto desired_velocity
 	
@@ -50,11 +50,11 @@ func process_unharvested():
 			carrying_host = host
 		
 func process_picking_up(delta):
-	var target = carrying_host.get_pickup_location(self)
+	var local_target = carrying_host.get_pickup_location(self)
 	
-	move_to_target(target, delta)
+	move_to_target(local_target, delta)
 	
-	if global_position.distance_to(target) < 5:
+	if global_position.distance_to(local_target) < 5:
 		carrying_host.add_cargo(self)
 		status = STATUS.PICKED_UP
 	
@@ -97,9 +97,9 @@ func _physics_process(delta):
 			print("Cargo unknown status: ", status)
  
 
-func give_to_bunny(bunny: Node2D):
+func give_to_bunny(local_bunny: Node2D):
 	status = STATUS.FLYING_TO_BUNNY
-	self.bunny = bunny
+	self.bunny = local_bunny
 
 
 func get_closest_cargo_stash() -> Node2D:
@@ -118,6 +118,6 @@ func get_closest_cargo_stash() -> Node2D:
 
 func _on_CargoBunnyTrackTimer_timeout():
 	var cargo_bunnies = get_tree().get_nodes_in_group("CollectorBunny")
-	for bunny in cargo_bunnies:
-		if not bunny in potential_hosts:
-			potential_hosts.append(bunny)
+	for c_bunny in cargo_bunnies:
+		if not c_bunny in potential_hosts:
+			potential_hosts.append(c_bunny)

@@ -16,7 +16,6 @@ var dash_duration := .3
 var tween: Tween
 
 func _init(parent: Node):
-	add_child(tween)
 	dash_timer = Timer.new()
 	dash_timer.one_shot = true
 	dash_timer.wait_time = dash_duration

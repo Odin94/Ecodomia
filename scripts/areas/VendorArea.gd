@@ -8,7 +8,7 @@ var staffing_distance = 24
 var _is_staffed := false
 var staff_upgrade_purchased := false
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not staff_upgrade_purchased:
 		_is_staffed = global_position.distance_to(player.global_position) < staffing_distance
 

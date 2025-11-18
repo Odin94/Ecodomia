@@ -7,10 +7,10 @@ var bottom_target_position_offset := Vector2(0, 32)
 
 var speed := 20
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if moving:
-		move_to_target($TopBody, global_position + top_target_position_offset, speed * delta)
-		move_to_target($BottomBody, global_position + bottom_target_position_offset, speed * delta)
+		move_to_target($TopBody, global_position + top_target_position_offset)
+		move_to_target($BottomBody, global_position + bottom_target_position_offset)
 
 func start_opening():
 	$BottomBody/CollisionShape2D.disabled = true
@@ -18,7 +18,7 @@ func start_opening():
 	moving = true
 
 
-func move_to_target(kinematic: KinematicBody2D, target: Vector2, delta):
+func move_to_target(kinematic: KinematicBody2D, target: Vector2):
 	if kinematic.global_position.distance_to(target) < 2:
 		return
 	var velocity = kinematic.global_position.direction_to(target)

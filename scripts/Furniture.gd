@@ -101,9 +101,9 @@ var sprite_by_name_2 := {
 	"bed_blue": Vector2(8, 16),
 	"bed_red": Vector2(16, 16),
 }
-func set_sprite(furniture_name: String):
-	$Sprite.region_rect.position = sprite_by_name.get(furniture_name, Vector2(-99, -99))
-	$Sprite2.region_rect.position = sprite_by_name_2.get(furniture_name, Vector2(-99, -99))
+func set_sprite(local_furniture_name: String):
+	$Sprite.region_rect.position = sprite_by_name.get(local_furniture_name, Vector2(-99, -99))
+	$Sprite2.region_rect.position = sprite_by_name_2.get(local_furniture_name, Vector2(-99, -99))
 
 var bonus_by_name := {
 	"painting_flowers": {

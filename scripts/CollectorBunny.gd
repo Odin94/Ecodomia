@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var smoke_cloud_scene = load("res://scenes/FX/SmokeCloud.tscn")
-export(Array, Vector2) var way_points := [global_position]
+export(Array, Vector2) var way_points := []
 
 var way_point_index := 0
 var index_direction = 1
@@ -14,14 +14,16 @@ var collected_cargo := []
 var cargo_limit := 100
 
 func _ready():
+	if way_points.empty():
+		way_points = [global_position]
 	visible = false
 	$CollisionShape2D.disabled = true
 	is_chilling = true
 
-func process_collecting(delta):
+func process_collecting(_delta):
 	if is_chilling:
 		return
-	move_to_target(way_points[way_point_index], delta)
+	move_to_target(way_points[way_point_index])
 	if global_position.distance_to(way_points[way_point_index]) < 2:
 		way_point_index += index_direction
 		if way_point_index >= way_points.size() or way_point_index < 0:
@@ -29,7 +31,7 @@ func process_collecting(delta):
 			$AnimatedSprite.play("stand down")
 			yield (get_tree().create_timer(1.5), "timeout")
 			is_chilling = false
-			index_direction = -index_direction
+			index_direction = - index_direction
 			if index_direction == 1:
 				way_point_index = 0
 			else:
@@ -51,7 +53,7 @@ func spawn():
 	$CollisionShape2D.disabled = false
 	is_chilling = false
 
-func move_to_target(target: Vector2, delta):
+func move_to_target(target: Vector2):
 	var velocity = Vector2.ZERO
 	if global_position.distance_to(target) < 2:
 		$AnimatedSprite.play("stand left")
